@@ -142,8 +142,13 @@ export default function SajuReading({ data, name, hideTime }: { data: SajuResult
         </section>
       )}
 
+      {/* 사주 명식 */}
+      <Section id="chart" title="사주 명식" subtitle="태어난 연·월·일·시의 천간과 지지" delay={0.25}>
+        <SajuChart data={data} hideTime={hideTime} />
+      </Section>
+
       {/* 인생 흐름 */}
-      <section className="anim-fade card-warm p-5 sm:p-7" style={{ animationDelay: "0.25s" }}>
+      <section className="anim-fade card-warm p-5 sm:p-7" style={{ animationDelay: "0.3s" }}>
         <h3 className="mb-1 font-[family-name:var(--font-noto-serif)] text-base font-bold text-[var(--ink)] sm:text-[17px]">
           인생의 흐름
         </h3>
@@ -152,19 +157,22 @@ export default function SajuReading({ data, name, hideTime }: { data: SajuResult
         <div className="whitespace-pre-line text-[13px] leading-[2] text-[var(--ink-light)]">{reading.lifeDir}</div>
       </section>
 
-      {/* 사주 명식 */}
-      <Section id="chart" title="사주 명식" subtitle="태어난 연·월·일·시의 천간과 지지" delay={0.3}>
-        <SajuChart data={data} hideTime={hideTime} />
+      {/* 대운·세운 */}
+      <Section id="daeun" title="운의 흐름" subtitle="대운(10년)과 세운(매년)의 전환" delay={0.35}>
+        <DaeunTimeline data={data} />
+        {reading.daeunReading && (
+          <div className="mt-5 rounded-xl bg-white/60 p-4">
+            <h4 className="mb-2 text-[12px] font-bold text-[var(--ink)]">대운 풀이</h4>
+            <p className="whitespace-pre-line text-[13px] leading-[1.9] text-[var(--ink-light)]">{reading.daeunReading}</p>
+          </div>
+        )}
+        {reading.seunReading && (
+          <div className="mt-3 rounded-xl bg-white/60 p-4">
+            <h4 className="mb-2 text-[12px] font-bold text-[var(--accent)]">올해의 운</h4>
+            <p className="whitespace-pre-line text-[13px] leading-[1.9] text-[var(--ink-light)]">{reading.seunReading}</p>
+          </div>
+        )}
       </Section>
-
-      {/* 오행 분석 상세 */}
-      {reading.ohaengAnalysis && (
-        <section className="anim-fade card-warm p-5 sm:p-7" style={{ animationDelay: "0.35s" }}>
-          <h3 className="mb-1 font-[family-name:var(--font-noto-serif)] text-base font-bold text-[var(--ink)] sm:text-[17px]">오행 분석</h3>
-          <div className="deco-line mb-4 mt-3" />
-          <p className="whitespace-pre-line text-[13px] leading-[1.9] text-[var(--ink-light)]">{reading.ohaengAnalysis}</p>
-        </section>
-      )}
 
       {/* 십성 */}
       <Section id="sipsung" title="십성 구성" subtitle="나를 기준으로 본 주변과의 관계" delay={0.4}>
@@ -186,23 +194,6 @@ export default function SajuReading({ data, name, hideTime }: { data: SajuResult
             );
           })}
         </div>
-      </Section>
-
-      {/* 대운·세운 */}
-      <Section id="daeun" title="운의 흐름" subtitle="대운(10년)과 세운(매년)의 전환" delay={0.45}>
-        <DaeunTimeline data={data} />
-        {reading.daeunReading && (
-          <div className="mt-5 rounded-xl bg-white/60 p-4">
-            <h4 className="mb-2 text-[12px] font-bold text-[var(--ink)]">대운 풀이</h4>
-            <p className="whitespace-pre-line text-[13px] leading-[1.9] text-[var(--ink-light)]">{reading.daeunReading}</p>
-          </div>
-        )}
-        {reading.seunReading && (
-          <div className="mt-3 rounded-xl bg-white/60 p-4">
-            <h4 className="mb-2 text-[12px] font-bold text-[var(--accent)]">올해의 운</h4>
-            <p className="whitespace-pre-line text-[13px] leading-[1.9] text-[var(--ink-light)]">{reading.seunReading}</p>
-          </div>
-        )}
       </Section>
 
       {/* 마무리 */}
