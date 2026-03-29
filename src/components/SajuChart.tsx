@@ -21,7 +21,7 @@ function Glyph({
         <span className={`hanja text-xl sm:text-2xl ${s.color}`}>{el.한자}</span>
       </div>
       <span className="text-[11px] font-medium text-[var(--ink-light)]">{el.한글}</span>
-      <span className={`rounded-full px-2 py-0.5 text-[9px] font-semibold ${s.bg} ${s.color} border ${s.border}`}>
+      <span className={`rounded-full px-2 py-0.5 text-[10px] font-semibold ${s.bg} ${s.color} border ${s.border}`}>
         {el.십성}
       </span>
     </div>
@@ -53,23 +53,23 @@ export default function SajuChart({ data, hideTime }: { data: SajuResult; hideTi
             }`}
           >
             {p.me && (
-              <div className="absolute -top-2.5 rounded-full bg-[var(--ink)] px-2.5 py-0.5 text-[9px] font-bold tracking-wider text-[#f5f0e8]">
+              <div className="absolute -top-2.5 rounded-full bg-[var(--ink)] px-2.5 py-0.5 text-[10px] font-bold tracking-wider text-[#f5f0e8]">
                 日主
               </div>
             )}
             <div className="mb-3 text-center">
               <div className="text-[11px] font-bold text-[var(--ink-light)]">{p.label}</div>
-              <div className="text-[10px] text-[var(--ink-muted)]">{p.sub}</div>
+              <div className="text-[11px] text-[var(--ink-muted)]">{p.sub}</div>
             </div>
 
             {/* 천간 */}
-            <div className="mb-1 text-[8px] font-medium uppercase tracking-widest text-[var(--ink-muted)]">천간</div>
+            <div className="mb-1 text-[10px] font-medium uppercase tracking-widest text-[var(--ink-muted)]">천간</div>
             <Glyph el={p.gan} highlight={p.me} />
 
             <div className="my-2 h-px w-8 bg-[var(--border)]" />
 
             {/* 지지 */}
-            <div className="mb-1 text-[8px] font-medium uppercase tracking-widest text-[var(--ink-muted)]">지지</div>
+            <div className="mb-1 text-[10px] font-medium uppercase tracking-widest text-[var(--ink-muted)]">지지</div>
             <Glyph el={p.ji} />
           </div>
         ))}

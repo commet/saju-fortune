@@ -25,13 +25,13 @@ export default function OhaengChart({ counts }: { counts: Record<Ohaeng, number>
                 ))}
                 {c === 0 && (
                   <div className="flex h-4 w-4 items-center justify-center rounded-full border-2 border-dashed border-[var(--border)]">
-                    <span className="text-[7px] text-[var(--ink-muted)]">0</span>
+                    <span className="text-[10px] text-[var(--ink-muted)]">0</span>
                   </div>
                 )}
               </div>
               <div className="text-center">
                 <div className={`hanja text-sm font-bold ${s.color}`}>{s.hanja}</div>
-                <div className="text-[10px] text-[var(--ink-muted)]">{s.label}</div>
+                <div className="text-[11px] text-[var(--ink-muted)]">{s.label}</div>
               </div>
             </div>
           );

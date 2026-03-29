@@ -193,7 +193,7 @@ export default function SajuReading({ data, name, hideTime }: { data: SajuResult
             };
             return (
               <div key={i} className="rounded-xl border border-[var(--border-light)] bg-white/60 p-3.5">
-                <div className="mb-1 text-[10px] text-[var(--ink-muted)]">{item.position} — {posInfo[item.position] || ""}</div>
+                <div className="mb-1 text-[11px] text-[var(--ink-muted)]">{item.position} — {posInfo[item.position] || ""}</div>
                 <div className="mb-1.5 flex items-baseline gap-2">
                   <span className="text-[14px] font-bold text-[var(--ink)]">{item.name}</span>
                   <span className="text-[11px] text-[var(--ink-muted)]">{item.info.role}</span>

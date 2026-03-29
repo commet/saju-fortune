@@ -35,7 +35,7 @@ export default function DaeunTimeline({ data }: { data: SajuResult }) {
             const js = OHAENG_STYLE[d.지지.오행 as Ohaeng];
             return (
               <div key={i} className={`card relative p-4 ${active ? "ring-1 ring-[var(--accent-soft)]/30" : ""}`}>
-                <div className={`mb-2 text-[10px] font-bold tracking-wider ${active ? "text-[var(--accent)]" : "text-[var(--ink-muted)]"}`}>
+                <div className={`mb-2 text-[11px] font-bold tracking-wider ${active ? "text-[var(--accent)]" : "text-[var(--ink-muted)]"}`}>
                   {active ? "현재 대운" : "다음 대운"}
                 </div>
                 <div className="mb-3 text-sm text-[var(--ink-light)]">
@@ -43,10 +43,10 @@ export default function DaeunTimeline({ data }: { data: SajuResult }) {
                 </div>
                 <GanJiPair gan={d.천간} ji={d.지지} />
                 <div className="mt-2 flex gap-1.5">
-                  <span className={`rounded-full px-2 py-0.5 text-[9px] font-semibold ${gs.bg} ${gs.color} border ${gs.border}`}>
+                  <span className={`rounded-full px-2 py-0.5 text-[10px] font-semibold ${gs.bg} ${gs.color} border ${gs.border}`}>
                     {d.천간.십성}
                   </span>
-                  <span className={`rounded-full px-2 py-0.5 text-[9px] font-semibold ${js.bg} ${js.color} border ${js.border}`}>
+                  <span className={`rounded-full px-2 py-0.5 text-[10px] font-semibold ${js.bg} ${js.color} border ${js.border}`}>
                     {d.지지.십성}
                   </span>
                 </div>
@@ -62,7 +62,7 @@ export default function DaeunTimeline({ data }: { data: SajuResult }) {
           <h4 className="text-[13px] font-bold text-[var(--ink)]">세운 歲運</h4>
           <span className="text-[11px] text-[var(--ink-muted)]">향후 5년 연간 흐름</span>
         </div>
-        <div className="no-scrollbar -mx-1 flex gap-2 overflow-x-auto px-1 pb-2 sm:grid sm:grid-cols-5 sm:gap-2.5 sm:overflow-visible sm:pb-0">
+        <div className="no-scrollbar scroll-hint-r -mx-1 flex gap-2 overflow-x-auto px-1 pb-2 sm:grid sm:grid-cols-5 sm:gap-2.5 sm:overflow-visible sm:pb-0">
           {data.세운_현재_5년.map((s) => {
             const now = s.연도 === thisYear;
             const gs = OHAENG_STYLE[s.천간.오행 as Ohaeng];
@@ -83,8 +83,8 @@ export default function DaeunTimeline({ data }: { data: SajuResult }) {
                   </div>
                 </div>
                 <div className="mt-2 flex flex-col items-center gap-0.5">
-                  <span className={`rounded-full px-1.5 py-0.5 text-[8px] font-semibold ${gs.bg} ${gs.color}`}>{s.천간.십성}</span>
-                  <span className={`rounded-full px-1.5 py-0.5 text-[8px] font-semibold ${js.bg} ${js.color}`}>{s.지지.십성}</span>
+                  <span className={`rounded-full px-1.5 py-0.5 text-[10px] font-semibold ${gs.bg} ${gs.color}`}>{s.천간.십성}</span>
+                  <span className={`rounded-full px-1.5 py-0.5 text-[10px] font-semibold ${js.bg} ${js.color}`}>{s.지지.십성}</span>
                 </div>
               </div>
             );
