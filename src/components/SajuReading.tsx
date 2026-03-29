@@ -59,31 +59,45 @@ export default function SajuReading({ data, name, hideTime }: { data: SajuResult
 
       <SectionNav />
 
-      {/* ★ 종합 풀이 — 최상단 */}
-      <section id="summary" className="anim-fade card p-5 sm:p-7" style={{ animationDelay: "0.05s", border: "1px solid var(--accent-soft)", background: "linear-gradient(135deg, var(--accent-bg), var(--bg-card))" }}>
-        <h3 className="mb-1 font-[family-name:var(--font-noto-serif)] text-base font-bold text-[var(--accent)] sm:text-[17px]">
-          {name}님의 사주 풀이
-        </h3>
-        <div className="deco-line mb-5 mt-3" />
-        <div className="whitespace-pre-line text-[13px] leading-[2] text-[var(--ink-light)]">
-          {reading.overview}
-        </div>
-      </section>
+      {/* ★ 종합 풀이 — 섹션별 카드 */}
+      {(() => {
+        const sections = reading.overview.split(/──\s*/);
+        const titles = ["", "오행으로 보는 성격", "핵심 정리", "혹시 이런 느낌 있으셨을까요?"];
+        return sections.map((sec, i) => {
+          const text = sec.trim();
+          if (!text) return null;
+          const isFirst = i === 0;
+          const isLast = i === sections.length - 1;
+          const title = isFirst ? `${name}님의 사주 풀이` : (titles[i] || "");
+          return (
+            <section key={i} id={isFirst ? "summary" : undefined}
+              className={`anim-fade ${isFirst ? "card" : "card-warm"} p-5 sm:p-7`}
+              style={isFirst ? { animationDelay: "0.05s", border: "1px solid var(--accent-soft)", background: "linear-gradient(135deg, var(--accent-bg), var(--bg-card))" } : { animationDelay: `${0.05 + i * 0.05}s` }}>
+              {title && (
+                <>
+                  <h3 className={`mb-1 font-[family-name:var(--font-noto-serif)] text-base font-bold sm:text-[17px] ${isFirst ? "text-[var(--accent)]" : "text-[var(--ink)]"}`}>
+                    {title}
+                  </h3>
+                  <div className="deco-line mb-4 mt-3" />
+                </>
+              )}
+              <div className="whitespace-pre-line text-[13px] leading-[2] text-[var(--ink-light)]">
+                {text}
+              </div>
+            </section>
+          );
+        }).filter(Boolean);
+      })()}
 
       {/* 인생 방향 */}
-      <section className="anim-fade card-warm p-5 sm:p-7" style={{ animationDelay: "0.1s" }}>
-        <h3 className="mb-1 font-[family-name:var(--font-noto-serif)] text-base font-bold text-[var(--ink)] sm:text-[17px]">
-          인생의 흐름
-        </h3>
-        <p className="mt-0.5 text-[11px] text-[var(--ink-muted)]">오행 구조로 본 삶의 방향</p>
-        <div className="deco-line mb-5 mt-3" />
+      <Section title="인생의 흐름" subtitle="오행 구조로 본 삶의 방향" delay={0.15}>
         <div className="whitespace-pre-line text-[13px] leading-[2] text-[var(--ink-light)]">
           {reading.lifeDir}
         </div>
-      </section>
+      </Section>
 
       {/* 사주팔자 차트 */}
-      <Section id="chart" title="사주팔자 四柱八字" subtitle="태어난 연·월·일·시의 천간과 지지" delay={0.15}>
+      <Section id="chart" title="사주 명식 四柱八字" subtitle="태어난 연·월·일·시의 천간과 지지" delay={0.15}>
         <SajuChart data={data} hideTime={hideTime} />
         <p className="mt-4 text-center text-[11px] text-[var(--ink-muted)] leading-relaxed">
           일주(日柱) 천간이 &lsquo;나&rsquo;를 나타내는 <strong className="text-[var(--ink-light)]">일간(日干)</strong>입니다
