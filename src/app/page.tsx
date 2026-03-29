@@ -28,7 +28,6 @@ function groupLabel(g: GroupData): string {
   return g.members.map((m) => m.name).slice(0, 2).join(" · ") + (g.members.length > 2 ? " 외" : "");
 }
 function groupSub(g: GroupData): string {
-  if (g.note) return g.note;
   if (g.members.some((m) => m.role === "예비신랑")) return "결혼 예정";
   return `가족 ${g.members.length}명`;
 }
