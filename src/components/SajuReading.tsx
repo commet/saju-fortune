@@ -59,42 +59,143 @@ export default function SajuReading({ data, name, hideTime }: { data: SajuResult
 
       <SectionNav />
 
-      {/* ★ 종합 풀이 — 섹션별 카드 */}
+      {/* ★ 종합 풀이 — 각 섹션 개별 디자인 */}
       {(() => {
         const sections = reading.overview.split(/──\s*/);
-        const titles = ["", "오행으로 보는 성격", "핵심 정리", "혹시 이런 느낌 있으셨을까요?"];
-        return sections.map((sec, i) => {
-          const text = sec.trim();
-          if (!text) return null;
-          const isFirst = i === 0;
-          const isLast = i === sections.length - 1;
-          const title = isFirst ? `${name}님의 사주 풀이` : (titles[i] || "");
-          return (
-            <section key={i} id={isFirst ? "summary" : undefined}
-              className={`anim-fade ${isFirst ? "card" : "card-warm"} p-5 sm:p-7`}
-              style={isFirst ? { animationDelay: "0.05s", border: "1px solid var(--accent-soft)", background: "linear-gradient(135deg, var(--accent-bg), var(--bg-card))" } : { animationDelay: `${0.05 + i * 0.05}s` }}>
-              {title && (
-                <>
-                  <h3 className={`mb-1 font-[family-name:var(--font-noto-serif)] text-base font-bold sm:text-[17px] ${isFirst ? "text-[var(--accent)]" : "text-[var(--ink)]"}`}>
-                    {title}
-                  </h3>
-                  <div className="deco-line mb-4 mt-3" />
-                </>
-              )}
+        // sections[0] = 오프닝+성격, [1] = 오행 성격포인트, [2] = 핵심정리, [3] = 공감체크
+        const cards: React.ReactNode[] = [];
+
+        // 1. 메인 풀이 (골드 카드)
+        if (sections[0]?.trim()) {
+          cards.push(
+            <section key="main" id="summary" className="anim-fade card relative overflow-hidden p-5 sm:p-7"
+              style={{ animationDelay: "0.05s", border: "1px solid var(--accent-soft)", background: "linear-gradient(135deg, var(--accent-bg), var(--bg-card))" }}>
+              <div className="pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full bg-[var(--accent-soft)] opacity-[0.06]" />
+              <h3 className="mb-1 font-[family-name:var(--font-noto-serif)] text-base font-bold text-[var(--accent)] sm:text-[17px]">
+                {name}님의 사주 풀이
+              </h3>
+              <div className="deco-line mb-4 mt-3" />
               <div className="whitespace-pre-line text-[13px] leading-[2] text-[var(--ink-light)]">
-                {text}
+                {sections[0].trim()}
               </div>
             </section>
           );
-        }).filter(Boolean);
+        }
+
+        // 2. 오행 성격 포인트 (컬러 아이콘 카드)
+        if (sections[1]?.trim()) {
+          const lines = sections[1].trim().split("\n").filter((l) => l.trim());
+          const blocks: { icon: string; color: string; bg: string; lines: string[] }[] = [];
+          let current: typeof blocks[0] | null = null;
+
+          for (const line of lines) {
+            if (line.startsWith("🔥")) { current = { icon: "🔥", color: "text-[#9e2a2b]", bg: "bg-[#fdf0ef]", lines: [line.replace("🔥 ", "")] }; blocks.push(current); }
+            else if (line.startsWith("🏔")) { current = { icon: "🏔", color: "text-[#8b6914]", bg: "bg-[#fdf6e3]", lines: [line.replace("🏔 ", "")] }; blocks.push(current); }
+            else if (line.startsWith("⚔")) { current = { icon: "⚔", color: "text-[#52525b]", bg: "bg-[#f4f4f5]", lines: [line.replace("⚔ ", "")] }; blocks.push(current); }
+            else if (line.startsWith("🌊")) { current = { icon: "🌊", color: "text-[#1e3a5f]", bg: "bg-[#eef3fa]", lines: [line.replace("🌊 ", "")] }; blocks.push(current); }
+            else if (line.startsWith("🌿")) { current = { icon: "🌿", color: "text-[#2d6a4f]", bg: "bg-[#f0f7f0]", lines: [line.replace("🌿 ", "")] }; blocks.push(current); }
+            else if (line.startsWith("❌")) { current = { icon: "❌", color: "text-[#9e2a2b]", bg: "bg-[#fdf0ef]/50", lines: [line.replace("❌ ", "")] }; blocks.push(current); }
+            else if (current) { current.lines.push(line); }
+          }
+
+          cards.push(
+            <section key="ohaeng-personality" className="anim-fade space-y-2" style={{ animationDelay: "0.1s" }}>
+              <h3 className="px-1 font-[family-name:var(--font-noto-serif)] text-base font-bold text-[var(--ink)] sm:text-[17px]">
+                오행으로 보는 성격
+              </h3>
+              <div className="grid gap-2 sm:grid-cols-2">
+                {blocks.map((b, bi) => (
+                  <div key={bi} className={`rounded-2xl border border-[var(--border-light)] ${b.bg} p-4`}>
+                    <div className="mb-2 flex items-center gap-2">
+                      <span className="text-lg">{b.icon}</span>
+                      <span className={`text-[13px] font-bold ${b.color}`}>{b.lines[0]}</span>
+                    </div>
+                    {b.lines.slice(1).map((l, li) => (
+                      <p key={li} className="text-[12px] leading-[1.7] text-[var(--ink-light)]">{l}</p>
+                    ))}
+                  </div>
+                ))}
+              </div>
+            </section>
+          );
+        }
+
+        // 3. 핵심 정리 (아이콘 그리드)
+        if (sections[2]?.trim()) {
+          const items = sections[2].trim().split("\n").filter((l) => l.trim());
+          const iconMap: Record<string, { icon: string; accent: string; bg: string }> = {
+            "✔ 강점": { icon: "💪", accent: "text-[#2d6a4f]", bg: "bg-[#f0f7f0]" },
+            "✔ 잘 맞는": { icon: "🎯", accent: "text-[#1e3a5f]", bg: "bg-[#eef3fa]" },
+            "⚠ 주의": { icon: "⚡", accent: "text-[#9e2a2b]", bg: "bg-[#fdf0ef]" },
+            "💕 관계": { icon: "💕", accent: "text-[#8b6914]", bg: "bg-[#fdf6e3]" },
+            "👉 한마디": { icon: "✨", accent: "text-[var(--accent)]", bg: "bg-[var(--accent-bg)]" },
+          };
+
+          cards.push(
+            <section key="summary-grid" className="anim-fade space-y-2" style={{ animationDelay: "0.15s" }}>
+              <h3 className="px-1 font-[family-name:var(--font-noto-serif)] text-base font-bold text-[var(--ink)] sm:text-[17px]">
+                핵심 정리
+              </h3>
+              <div className="space-y-2">
+                {items.map((item, ii) => {
+                  const match = Object.entries(iconMap).find(([prefix]) => item.startsWith(prefix));
+                  const cfg = match?.[1] || { icon: "•", accent: "text-[var(--ink)]", bg: "bg-white" };
+                  const text = item.replace(/^[✔⚠💕👉]\s*/, "").replace(/^한마디로:\s*/, "");
+                  const isHighlight = item.startsWith("👉");
+                  return (
+                    <div key={ii} className={`rounded-xl border border-[var(--border-light)] ${cfg.bg} p-3.5 ${isHighlight ? "ring-1 ring-[var(--accent-soft)]/40" : ""}`}>
+                      <div className="flex items-start gap-2.5">
+                        <span className="mt-0.5 text-base shrink-0">{cfg.icon}</span>
+                        <p className={`text-[13px] leading-[1.8] ${isHighlight ? "font-bold " + cfg.accent : "text-[var(--ink-light)]"}`}>
+                          {text}
+                        </p>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </section>
+          );
+        }
+
+        // 4. 공감 체크리스트 (인터랙티브)
+        if (sections[3]?.trim()) {
+          const checkItems = sections[3].trim().split("\n").filter((l) => l.startsWith("•")).map((l) => l.replace("• ", ""));
+          if (checkItems.length > 0) {
+            cards.push(
+              <section key="checklist" className="anim-fade card-warm p-5 sm:p-7" style={{ animationDelay: "0.2s", background: "linear-gradient(135deg, #f0f7f0, var(--bg-card))", border: "1px solid #b7d7b0" }}>
+                <h3 className="mb-1 font-[family-name:var(--font-noto-serif)] text-base font-bold text-[#2d6a4f] sm:text-[17px]">
+                  혹시 이런 느낌 있으셨을까요?
+                </h3>
+                <p className="mb-4 text-[11px] text-[var(--ink-muted)]">해당되는 항목이 많을수록 사주가 잘 맞는 거예요</p>
+                <div className="space-y-2">
+                  {checkItems.map((item, ci) => (
+                    <label key={ci} className="flex cursor-pointer items-center gap-3 rounded-xl border border-[#b7d7b0]/50 bg-white/70 px-4 py-3 transition-colors hover:bg-white">
+                      <input type="checkbox" className="h-4 w-4 rounded border-[#b7d7b0] accent-[#2d6a4f]" />
+                      <span className="text-[13px] text-[var(--ink-light)]">{item}</span>
+                    </label>
+                  ))}
+                </div>
+              </section>
+            );
+          }
+        }
+
+        return cards;
       })()}
 
       {/* 인생 방향 */}
-      <Section title="인생의 흐름" subtitle="오행 구조로 본 삶의 방향" delay={0.15}>
+      <section className="anim-fade card-warm relative overflow-hidden p-5 sm:p-7" style={{ animationDelay: "0.25s" }}>
+        <div className="pointer-events-none absolute -left-8 -bottom-8 h-24 w-24 rounded-full bg-[#2d5f8a] opacity-[0.04]" />
+        <h3 className="mb-1 font-[family-name:var(--font-noto-serif)] text-base font-bold text-[var(--ink)] sm:text-[17px]">
+          인생의 흐름
+        </h3>
+        <p className="mt-0.5 text-[11px] text-[var(--ink-muted)]">오행 구조로 본 삶의 방향</p>
+        <div className="deco-line mb-4 mt-3" />
         <div className="whitespace-pre-line text-[13px] leading-[2] text-[var(--ink-light)]">
           {reading.lifeDir}
         </div>
-      </Section>
+      </section>
 
       {/* 사주팔자 차트 */}
       <Section id="chart" title="사주 명식 四柱八字" subtitle="태어난 연·월·일·시의 천간과 지지" delay={0.15}>
