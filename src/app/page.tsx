@@ -508,12 +508,15 @@ function GroupDetail({ group, onBack }: { group: GroupData; onBack: () => void }
                     }`}>{m.name.charAt(0)}</span>
                     <span>{m.name}</span>
                     <span className="text-[10px] text-[var(--ink-muted)]">{m.role}</span>
+                    {!m.birthTime && !m.birthTimeRange && (
+                      <span className="rounded bg-[var(--bg-main)] px-1 py-0.5 text-[8px] text-[var(--ink-muted)]">3주</span>
+                    )}
                   </button>
                 );
               })}
             </div>
             {selected?.saju ? (
-              <SajuReading data={selected.saju} name={selected.name} hideTime={!selected.birthTime && !selected.birthTimeRange && selected.birthTimeNote === "시간 모름"} />
+              <SajuReading data={selected.saju} name={selected.name} hideTime={!selected.birthTime && !selected.birthTimeRange} />
             ) : (
               <div className="py-20 text-center"><p className="text-sm text-[var(--ink-muted)]">사주 데이터를 불러올 수 없습니다.</p></div>
             )}
