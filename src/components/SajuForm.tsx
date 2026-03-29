@@ -94,7 +94,7 @@ export default function SajuForm({
         <div className="mt-2 flex rounded-lg border border-[var(--border)] overflow-hidden">
           {(["SOLAR", "LUNAR"] as const).map((t) => (
             <button key={t} type="button" onClick={() => update("birthdayType", t)}
-              className={`flex-1 py-2 text-[13px] font-medium transition-colors ${
+              className={`flex-1 py-3 text-[13px] font-medium transition-colors ${
                 form.birthdayType === t
                   ? "bg-[var(--accent-bg)] text-[var(--accent)] border-b-2 border-[var(--accent-soft)]"
                   : "bg-white text-[var(--ink-muted)] hover:bg-[var(--bg-warm)]"
@@ -110,16 +110,16 @@ export default function SajuForm({
         <legend className="mb-2 text-[13px] font-semibold text-[var(--ink-light)]">
           태어난 시간 <span className="font-normal text-[var(--ink-muted)]">— 시주(時柱)가 결정됩니다</span>
         </legend>
-        <div className="grid grid-cols-4 gap-1.5 sm:grid-cols-6">
+        <div className="grid grid-cols-4 gap-2 sm:grid-cols-6">
           {SIGIN.map((s) => (
             <button key={s.value} type="button" onClick={() => update("time", s.value)}
-              className={`rounded-lg border px-1 py-2.5 text-center transition-all ${
+              className={`rounded-lg border px-1 py-3 text-center transition-all ${
                 form.time === s.value
                   ? "border-[var(--accent-soft)] bg-[var(--accent-bg)] text-[var(--accent)] shadow-sm"
                   : "border-[var(--border-light)] bg-white text-[var(--ink-light)] hover:border-[var(--border)] hover:bg-[var(--bg-warm)]"
               }`}>
               <div className="text-[13px] font-bold">{s.label}</div>
-              <div className={`mt-0.5 text-[9px] leading-none ${form.time === s.value ? "text-[var(--accent-soft)]" : "text-[var(--ink-muted)]"}`}>{s.range}</div>
+              <div className={`mt-0.5 text-[10px] leading-tight ${form.time === s.value ? "text-[var(--accent-soft)]" : "text-[var(--ink-muted)]"}`}>{s.range}</div>
             </button>
           ))}
         </div>

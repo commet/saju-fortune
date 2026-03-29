@@ -57,8 +57,17 @@ export default function SajuReading({ data, name, hideTime }: { data: SajuResult
 
       {/* 오행 분포 — 최상단 */}
       <section id="ohaeng" className="anim-fade card-warm p-5 sm:p-7" style={{ animationDelay: "0.03s" }}>
-        <h3 className="mb-1 font-[family-name:var(--font-noto-serif)] text-base font-bold text-[var(--ink)] sm:text-[17px]">오행 분포</h3>
-        <p className="mt-0.5 text-[11px] text-[var(--ink-muted)]">나무·불·흙·쇠·물의 균형</p>
+        <div className="flex items-center justify-between">
+          <div>
+            <h3 className="mb-1 font-[family-name:var(--font-noto-serif)] text-base font-bold text-[var(--ink)] sm:text-[17px]">오행 분포</h3>
+            <p className="mt-0.5 text-[11px] text-[var(--ink-muted)]">나무·불·흙·쇠·물의 균형</p>
+          </div>
+          {hideTime && (
+            <span className="rounded-full border border-[var(--border)] bg-white px-2.5 py-1 text-[10px] text-[var(--ink-muted)]">
+              삼주 분석 · 시간 미상
+            </span>
+          )}
+        </div>
         <div className="deco-line mb-5 mt-3" />
         <OhaengChart counts={data.오행_갯수} />
       </section>

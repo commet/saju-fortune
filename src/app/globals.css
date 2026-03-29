@@ -78,6 +78,22 @@ input[type="number"] { -moz-appearance: textfield; }
 .anim-d5 { animation-delay: 0.5s; }
 .anim-d6 { animation-delay: 0.6s; }
 
+/* Respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .anim-fade, .anim-fade-slow, .anim-float { animation: none; opacity: 1; }
+  html { scroll-behavior: auto; }
+}
+
+/* Scroll hint fade for horizontal scrollable areas */
+.scroll-hint-r {
+  -webkit-mask-image: linear-gradient(to right, black 85%, transparent 100%);
+  mask-image: linear-gradient(to right, black 85%, transparent 100%);
+}
+.scroll-hint-r.scrolled-end {
+  -webkit-mask-image: none;
+  mask-image: none;
+}
+
 /* Traditional decorative line */
 .deco-line {
   height: 1px;

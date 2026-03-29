@@ -30,12 +30,12 @@ export default function SectionNav() {
   }, []);
 
   return (
-    <nav className="no-scrollbar sticky top-[52px] z-20 -mx-5 flex gap-0.5 overflow-x-auto border-b border-[var(--border-light)] bg-[var(--bg-main)]/90 px-5 backdrop-blur-md sm:-mx-6 sm:justify-center sm:px-6">
+    <nav className="no-scrollbar sticky top-[52px] z-20 -mx-5 flex gap-1 overflow-x-auto border-b border-[var(--border-light)] bg-[var(--bg-main)]/90 px-5 backdrop-blur-md sm:-mx-6 sm:justify-center sm:px-6">
       {SECTIONS.map(({ id, label }) => (
         <a
           key={id}
           href={`#${id}`}
-          className={`relative shrink-0 px-3.5 py-2.5 text-[12px] font-medium transition-colors ${
+          className={`relative shrink-0 px-4 py-3 text-[13px] font-medium transition-colors ${
             active === id
               ? "text-[var(--ink)]"
               : "text-[var(--ink-muted)] hover:text-[var(--ink-light)]"
