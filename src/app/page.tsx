@@ -120,12 +120,23 @@ function Hero({ onGo, stats }: { onGo: () => void; stats: { families: number; pe
 
       {/* Scroll indicator */}
       <div className="absolute bottom-6 left-1/2 -translate-x-1/2 anim-fade anim-d6">
-        <button onClick={onGo} className="flex flex-col items-center gap-1 text-[var(--ink-muted)] transition hover:text-[var(--ink-light)]">
-          <span className="text-[10px]">아래로</span>
+        <a href="#saju-guide" className="flex flex-col items-center gap-1 text-[var(--ink-muted)] transition hover:text-[var(--ink-light)]">
+          <span className="text-[10px]">사주란?</span>
           <svg className="h-4 w-4 animate-bounce" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M19 14l-7 7m0 0l-7-7" />
           </svg>
-        </button>
+        </a>
+      </div>
+
+      {/* Saju Guide section */}
+      <div id="saju-guide" className="mx-auto max-w-2xl px-4 pb-16 pt-8">
+        <SajuGuide />
+        <div className="mt-8 text-center">
+          <button onClick={onGo}
+            className="rounded-lg border border-[var(--border)] bg-white px-8 py-3 text-[14px] font-semibold text-[var(--ink)] shadow-sm transition-all hover:border-[var(--accent-soft)] hover:text-[var(--accent)] hover:shadow-md active:scale-[0.97]">
+            가족 사주 보러 가기 →
+          </button>
+        </div>
       </div>
     </div>
   );
