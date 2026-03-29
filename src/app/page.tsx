@@ -155,8 +155,9 @@ function GroupList({ groups, onSelect, onBack }: { groups: GroupData[]; onSelect
                   ))}
                 </div>
                 {couple && (
-                  <div className="absolute right-4 top-4 rounded-full bg-[var(--accent-bg)] px-2 py-0.5 text-[9px] font-semibold text-[var(--accent)]">
-                    궁합
+                  <div className="absolute right-3 top-3 flex items-center gap-1 rounded-full bg-gradient-to-r from-[var(--accent)] to-[#a67c28] px-2.5 py-1 shadow-sm">
+                    <span className="hanja text-[9px] text-white/80">合</span>
+                    <span className="text-[10px] font-bold text-white">궁합</span>
                   </div>
                 )}
               </button>
@@ -196,12 +197,13 @@ function GroupDetail({ group, onBack }: { group: GroupData; onBack: () => void }
           </button>
           {couple && (
             <button onClick={() => setTab(tab === "compat" ? "reading" : "compat")}
-              className={`rounded-md border px-3 py-1.5 text-[12px] font-medium transition-colors ${
+              className={`flex items-center gap-1.5 rounded-lg px-4 py-2 text-[13px] font-bold shadow-sm transition-all active:scale-95 ${
                 tab === "compat"
-                  ? "border-[var(--accent-soft)] bg-[var(--accent-bg)] text-[var(--accent)]"
-                  : "border-[var(--border)] bg-white text-[var(--ink-light)] hover:text-[var(--accent)]"
+                  ? "bg-[var(--ink)] text-[#f5f0e8] shadow-[var(--ink)]/10"
+                  : "bg-gradient-to-r from-[var(--accent)] to-[#a67c28] text-white shadow-[var(--accent)]/20 hover:shadow-md"
               }`}>
-              궁합
+              <span className="hanja text-[11px]">合</span>
+              궁합 보기
             </button>
           )}
         </div>
