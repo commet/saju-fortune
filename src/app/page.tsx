@@ -125,27 +125,24 @@ function Hero({ onGo, stats }: { onGo: () => void; stats: { families: number; pe
             가족 사주 보기
           </button>
         ) : (
-          <div className="anim-fade anim-d5 mt-8 w-full max-w-xs">
-            <div className="card relative overflow-hidden p-6 text-center">
-              <div className="pointer-events-none absolute -right-6 -top-6 h-16 w-16 rounded-full bg-[var(--accent-soft)] opacity-[0.08]" />
+          <div className="anim-fade anim-d5 mt-8 w-full max-w-xs px-4">
+            <div className="card p-6 text-center">
               <p className="mb-4 text-[13px] font-medium text-[var(--ink-light)]">비밀번호를 입력해주세요</p>
-              <div className="flex items-center gap-2">
-                <input
-                  type="password"
-                  value={pw}
-                  onChange={(e) => { setPw(e.target.value); setPwError(false); }}
-                  onKeyDown={(e) => e.key === "Enter" && handleEnter()}
-                  placeholder="••••"
-                  autoFocus
-                  className={`flex-1 rounded-lg border bg-white px-4 py-3.5 text-center text-[15px] font-medium text-[var(--ink)] outline-none transition ${
-                    pwError ? "border-[#9e2a2b] shadow-[0_0_0_3px_rgba(158,42,43,0.1)]" : "border-[var(--border)] focus:border-[var(--accent-soft)] focus:shadow-[0_0_0_3px_rgba(196,162,78,0.12)]"
-                  }`}
-                />
-                <button onClick={handleEnter}
-                  className="shrink-0 rounded-lg bg-[var(--ink)] px-6 py-3.5 text-[14px] font-bold text-[#f5f0e8] shadow-md transition-all hover:bg-[#1a1714] hover:shadow-lg active:scale-95">
-                  입장 →
-                </button>
-              </div>
+              <input
+                type="password"
+                value={pw}
+                onChange={(e) => { setPw(e.target.value); setPwError(false); }}
+                onKeyDown={(e) => e.key === "Enter" && handleEnter()}
+                placeholder="비밀번호"
+                autoFocus
+                className={`w-full rounded-lg border bg-white px-4 py-3.5 text-center text-[15px] font-medium text-[var(--ink)] outline-none transition ${
+                  pwError ? "border-[#9e2a2b]" : "border-[var(--border)] focus:border-[var(--accent-soft)]"
+                }`}
+              />
+              <button onClick={handleEnter}
+                className="mt-3 w-full rounded-lg bg-[var(--ink)] py-3.5 text-[14px] font-bold text-[#f5f0e8] shadow-md transition-all hover:bg-[#1a1714] hover:shadow-lg active:scale-95">
+                입장
+              </button>
               {pwError && <p className="mt-3 text-[12px] font-medium text-[#9e2a2b]">비밀번호가 맞지 않습니다</p>}
             </div>
           </div>
