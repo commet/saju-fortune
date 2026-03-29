@@ -37,18 +37,36 @@ const RO: Record<string, number> = { 부: 0, 모: 1, 예비신랑: 0, 예비신�
    HERO
    ──────────────────────────────────────────── */
 function Hero({ onGo, stats }: { onGo: () => void; stats: { families: number; people: number } }) {
+  const [pw, setPw] = useState("");
+  const [pwError, setPwError] = useState(false);
+  const [authed, setAuthed] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && sessionStorage.getItem("saju-auth") === "1") setAuthed(true);
+  }, []);
+
+  const handleEnter = () => {
+    if (pw === "lcc") {
+      setAuthed(true);
+      sessionStorage.setItem("saju-auth", "1");
+      setPwError(false);
+    } else {
+      setPwError(true);
+    }
+  };
+
   return (
-    <div className="relative min-h-screen overflow-hidden">
+    <div className="relative overflow-hidden">
       {/* BG blurs */}
       <div className="pointer-events-none absolute inset-0">
         <div className="absolute left-1/2 top-[10%] h-[400px] w-[400px] -translate-x-1/2 rounded-full bg-[var(--accent-soft)] opacity-[0.05] blur-3xl" />
         <div className="absolute left-[15%] top-[45%] h-[250px] w-[250px] rounded-full bg-[#52796f] opacity-[0.04] blur-3xl" />
-        <div className="absolute right-[15%] top-[65%] h-[220px] w-[220px] rounded-full bg-[#2d5f8a] opacity-[0.04] blur-3xl" />
+        <div className="absolute right-[15%] top-[55%] h-[220px] w-[220px] rounded-full bg-[#2d5f8a] opacity-[0.04] blur-3xl" />
       </div>
 
-      <div className="relative flex min-h-screen flex-col items-center justify-center px-4 text-center">
-        {/* top deco */}
-        <div className="anim-fade-slow mb-8 flex items-center gap-4">
+      {/* Main hero area */}
+      <div className="relative flex min-h-[70vh] flex-col items-center justify-center px-4 pt-12 text-center">
+        <div className="anim-fade-slow mb-6 flex items-center gap-4">
           <span className="h-px w-12 bg-gradient-to-r from-transparent to-[var(--accent-soft)]" />
           <span className="hanja text-sm tracking-[0.4em] text-[var(--accent-soft)]">四柱八字</span>
           <span className="h-px w-12 bg-gradient-to-l from-transparent to-[var(--accent-soft)]" />
@@ -62,7 +80,7 @@ function Hero({ onGo, stats }: { onGo: () => void; stats: { families: number; pe
         </p>
 
         {/* 오행 icons */}
-        <div className="anim-fade anim-d3 mt-10 flex items-center gap-3">
+        <div className="anim-fade anim-d3 mt-8 flex items-center gap-3">
           {[
             { h: "木", c: "text-[#52796f]", bg: "bg-[#f0f7f0]", b: "border-[#b7d7b0]", label: "나무" },
             { h: "火", c: "text-[#ae3f3d]", bg: "bg-[#fdf0ef]", b: "border-[#e5b4b3]", label: "불" },
@@ -79,64 +97,73 @@ function Hero({ onGo, stats }: { onGo: () => void; stats: { families: number; pe
           ))}
         </div>
 
-        <div className="deco-line anim-fade anim-d4 mx-auto mt-10 w-52" />
-
-        {/* Description */}
-        <p className="anim-fade anim-d4 mt-8 max-w-sm text-[13px] leading-[1.9] text-[var(--ink-muted)]">
-          태어난 연월일시의 네 기둥, <strong className="text-[var(--ink-light)]">사주팔자(四柱八字)</strong>를 풀어<br />
-          오행의 균형과 운의 흐름을 살펴봅니다.<br />
-          가족 구성원의 사주를 한곳에서 비교하고,<br />
-          부부·커플 궁합까지 확인할 수 있습니다.
+        <p className="anim-fade anim-d4 mt-6 max-w-sm text-[13px] leading-[1.9] text-[var(--ink-muted)]">
+          태어난 연월일시의 네 기둥, <strong className="text-[var(--ink-light)]">사주팔자</strong>를 풀어<br />
+          오행의 균형과 운의 흐름을 살펴봅니다.
         </p>
 
         {/* Stats */}
         {stats.families > 0 && (
-          <div className="anim-fade anim-d5 mt-8 flex items-center gap-6">
+          <div className="anim-fade anim-d4 mt-5 flex items-center gap-5">
             <div className="text-center">
-              <div className="text-xl font-bold text-[var(--ink)]">{stats.families}</div>
+              <div className="text-lg font-bold text-[var(--ink)]">{stats.families}</div>
               <div className="text-[10px] text-[var(--ink-muted)]">가족</div>
             </div>
-            <div className="h-6 w-px bg-[var(--border)]" />
+            <div className="h-5 w-px bg-[var(--border)]" />
             <div className="text-center">
-              <div className="text-xl font-bold text-[var(--ink)]">{stats.people}</div>
+              <div className="text-lg font-bold text-[var(--ink)]">{stats.people}</div>
               <div className="text-[10px] text-[var(--ink-muted)]">사주 풀이</div>
             </div>
           </div>
         )}
 
-        {/* CTA */}
-        <button onClick={onGo}
-          className="anim-fade anim-d5 mt-10 rounded-lg bg-[var(--ink)] px-10 py-4 text-[15px] font-semibold tracking-wide text-[#f5f0e8] shadow-lg shadow-[var(--ink)]/10 transition-all hover:bg-[#1a1714] hover:shadow-xl active:scale-[0.97]">
-          가족 사주 보기
-        </button>
+        {/* CTA or Password */}
+        {authed ? (
+          <button onClick={onGo}
+            className="anim-fade anim-d5 mt-8 rounded-lg bg-[var(--ink)] px-10 py-4 text-[15px] font-semibold tracking-wide text-[#f5f0e8] shadow-lg shadow-[var(--ink)]/10 transition-all hover:bg-[#1a1714] hover:shadow-xl active:scale-[0.97]">
+            가족 사주 보기
+          </button>
+        ) : (
+          <div className="anim-fade anim-d5 mt-8 flex flex-col items-center gap-2">
+            <div className="flex items-center gap-2">
+              <input
+                type="password"
+                value={pw}
+                onChange={(e) => { setPw(e.target.value); setPwError(false); }}
+                onKeyDown={(e) => e.key === "Enter" && handleEnter()}
+                placeholder="비밀번호"
+                className={`w-36 rounded-lg border bg-white px-4 py-3 text-center text-[14px] text-[var(--ink)] outline-none transition ${
+                  pwError ? "border-[#9e2a2b] shake" : "border-[var(--border)] focus:border-[var(--accent-soft)]"
+                }`}
+              />
+              <button onClick={handleEnter}
+                className="rounded-lg bg-[var(--ink)] px-5 py-3 text-[14px] font-semibold text-[#f5f0e8] transition-all hover:bg-[#1a1714] active:scale-95">
+                입장
+              </button>
+            </div>
+            {pwError && <p className="text-[11px] text-[#9e2a2b]">비밀번호가 맞지 않습니다</p>}
+          </div>
+        )}
 
-        {/* Bottom feature pills */}
-        <div className="anim-fade anim-d6 mt-6 flex flex-wrap justify-center gap-2">
-          {["사주팔자 풀이", "오행 분석", "십성 해석", "대운·세운", "부부 궁합"].map((f) => (
+        {/* Feature pills */}
+        <div className="anim-fade anim-d6 mt-5 flex flex-wrap justify-center gap-2">
+          {["사주팔자", "오행 분석", "십성 해석", "대운·세운", "부부 궁합"].map((f) => (
             <span key={f} className="rounded-full border border-[var(--border)] bg-white/70 px-3 py-1 text-[10px] text-[var(--ink-muted)]">{f}</span>
           ))}
         </div>
       </div>
 
-      {/* Scroll indicator */}
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 anim-fade anim-d6">
-        <a href="#saju-guide" className="flex flex-col items-center gap-1 text-[var(--ink-muted)] transition hover:text-[var(--ink-light)]">
-          <span className="text-[10px]">사주란?</span>
-          <svg className="h-4 w-4 animate-bounce" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M19 14l-7 7m0 0l-7-7" />
-          </svg>
-        </a>
-      </div>
-
-      {/* Saju Guide section */}
-      <div id="saju-guide" className="mx-auto max-w-2xl px-4 pb-16 pt-8">
+      {/* Saju Guide — 바로 이어짐 */}
+      <div id="saju-guide" className="relative mx-auto max-w-2xl px-4 pb-12 pt-4">
         <SajuGuide />
-        <div className="mt-8 text-center">
-          <button onClick={onGo}
-            className="rounded-lg border border-[var(--border)] bg-white px-8 py-3 text-[14px] font-semibold text-[var(--ink)] shadow-sm transition-all hover:border-[var(--accent-soft)] hover:text-[var(--accent)] hover:shadow-md active:scale-[0.97]">
-            가족 사주 보러 가기 →
-          </button>
-        </div>
+        {authed && (
+          <div className="mt-6 text-center">
+            <button onClick={onGo}
+              className="rounded-lg border border-[var(--border)] bg-white px-8 py-3 text-[14px] font-semibold text-[var(--ink)] shadow-sm transition-all hover:border-[var(--accent-soft)] hover:text-[var(--accent)] hover:shadow-md active:scale-[0.97]">
+              가족 사주 보러 가기 →
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -436,6 +463,11 @@ export default function Home() {
   };
 
   const goToList = () => {
+    // Auth check
+    if (typeof window !== "undefined" && sessionStorage.getItem("saju-auth") !== "1") {
+      setView("hero");
+      return;
+    }
     if (groups.length === 0) {
       setLoading(true);
       fetch("/api/groups").then((r) => r.json()).then((d) => { setGroups(d.groups || []); setLoading(false); }).catch(() => setLoading(false));
