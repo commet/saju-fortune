@@ -566,13 +566,13 @@
           "name": "이재호",
           "birthDate": "1970-05-05",
           "calendar": "양력",
-          "birthTime": "03:00",
+          "birthTime": "04:00",
           "birthTimeNote": null,
           "gender": "M",
           "role": "부",
-          "apiTime": "02",
+          "apiTime": "04",
           "apiBirthdayType": "SOLAR",
-          "cacheKey": "19700505_02_SOLAR_MALE",
+          "cacheKey": "19700505_04_SOLAR_MALE",
           "hasSaju": true
         },
         {
@@ -644,6 +644,141 @@
           "apiTime": "06",
           "apiBirthdayType": "LUNAR",
           "cacheKey": "19640724_06_LUNAR_FEMALE",
+          "hasSaju": true
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "note": null,
+      "members": [
+        {
+          "name": "김영문",
+          "birthDate": "1965-11-22",
+          "calendar": "음력",
+          "birthTime": null,
+          "birthTimeNote": null,
+          "gender": "M",
+          "role": "부",
+          "apiTime": "12",
+          "apiBirthdayType": "LUNAR",
+          "cacheKey": "19651122_12_LUNAR_MALE",
+          "hasSaju": true
+        },
+        {
+          "name": "김미향",
+          "birthDate": "1971-04-17",
+          "calendar": "음력",
+          "birthTime": null,
+          "birthTimeNote": null,
+          "gender": "F",
+          "role": "모",
+          "apiTime": "12",
+          "apiBirthdayType": "LUNAR",
+          "cacheKey": "19710417_12_LUNAR_FEMALE",
+          "hasSaju": true
+        },
+        {
+          "name": "김태양",
+          "birthDate": "1993-03-05",
+          "calendar": "양력",
+          "birthTime": "05:13",
+          "birthTimeNote": null,
+          "gender": "M",
+          "role": "아들",
+          "apiTime": "04",
+          "apiBirthdayType": "SOLAR",
+          "cacheKey": "19930305_04_SOLAR_MALE",
+          "hasSaju": true
+        },
+        {
+          "name": "김해양",
+          "birthDate": "1995-04-05",
+          "calendar": "양력",
+          "birthTime": "12:00",
+          "birthTimeNote": null,
+          "gender": "M",
+          "role": "아들",
+          "apiTime": "12",
+          "apiBirthdayType": "SOLAR",
+          "cacheKey": "19950405_12_SOLAR_MALE",
+          "hasSaju": true
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "note": null,
+      "members": [
+        {
+          "name": "조성례",
+          "birthDate": "1968-08-24",
+          "calendar": "음력",
+          "birthTime": "10:00",
+          "birthTimeNote": null,
+          "gender": "F",
+          "role": "모",
+          "apiTime": "10",
+          "apiBirthdayType": "LUNAR",
+          "cacheKey": "19680824_10_LUNAR_FEMALE",
+          "hasSaju": true
+        },
+        {
+          "name": "박지혜",
+          "birthDate": "2003-03-20",
+          "calendar": "양력",
+          "birthTime": "04:30",
+          "birthTimeNote": null,
+          "gender": "F",
+          "role": "딸",
+          "apiTime": "04",
+          "apiBirthdayType": "SOLAR",
+          "cacheKey": "20030320_04_SOLAR_FEMALE",
+          "hasSaju": true
+        },
+        {
+          "name": "박지수",
+          "birthDate": "2005-08-13",
+          "calendar": "양력",
+          "birthTime": "09:00",
+          "birthTimeNote": null,
+          "gender": "F",
+          "role": "딸",
+          "apiTime": "08",
+          "apiBirthdayType": "SOLAR",
+          "cacheKey": "20050813_08_SOLAR_FEMALE",
+          "hasSaju": true
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "note": null,
+      "members": [
+        {
+          "name": "김은석",
+          "birthDate": "1993-03-30",
+          "calendar": "양력",
+          "birthTime": "13:00",
+          "birthTimeNote": null,
+          "gender": "M",
+          "role": "부",
+          "apiTime": "12",
+          "apiBirthdayType": "SOLAR",
+          "cacheKey": "19930330_12_SOLAR_MALE",
+          "hasSaju": true
+        },
+        {
+          "name": "장하영",
+          "birthDate": "1997-07-13",
+          "calendar": "양력",
+          "birthTime": "23:00",
+          "birthTimeNote": null,
+          "gender": "F",
+          "role": "모",
+          "apiTime": "22",
+          "apiBirthdayType": "SOLAR",
+          "cacheKey": "19970713_22_SOLAR_FEMALE",
           "hasSaju": true
         }
       ]
