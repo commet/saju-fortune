@@ -23,7 +23,7 @@ interface GroupData {
   members: MemberData[];
 }
 
-/* ────────── helper ────────── */
+/* ────────── helpers ────────── */
 function coupleRoles(members: MemberData[]): [MemberData, MemberData] | null {
   const a = members.find((m) => ["부", "예비신랑", "사위"].includes(m.role));
   const b = members.find((m) => ["모", "예비신부"].includes(m.role));
@@ -46,23 +46,87 @@ function groupSubLabel(g: GroupData): string {
 
 const ROLE_ORDER: Record<string, number> = { 부: 0, 모: 1, 예비신랑: 0, 예비신부: 1, 아들: 2, 딸: 3, 사위: 4 };
 
+/* ────────── Hero ────────── */
+function Hero({ onGoFamilies }: { onGoFamilies: () => void }) {
+  return (
+    <div className="flex min-h-[85vh] flex-col items-center justify-center px-4 text-center">
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div className="absolute left-1/2 top-[15%] h-[300px] w-[300px] -translate-x-1/2 rounded-full bg-[var(--accent-soft)] opacity-[0.04] blur-3xl" />
+        <div className="absolute left-[20%] top-[40%] h-[200px] w-[200px] rounded-full bg-[#52796f] opacity-[0.03] blur-3xl" />
+        <div className="absolute right-[20%] top-[60%] h-[180px] w-[180px] rounded-full bg-[#2d5f8a] opacity-[0.03] blur-3xl" />
+      </div>
+
+      <div className="anim-fade-slow relative mb-6 flex items-center gap-4">
+        <span className="h-px w-10 bg-gradient-to-r from-transparent to-[var(--accent-soft)]" />
+        <span className="hanja text-sm tracking-[0.4em] text-[var(--accent-soft)]">四柱八字</span>
+        <span className="h-px w-10 bg-gradient-to-l from-transparent to-[var(--accent-soft)]" />
+      </div>
+
+      <h1 className="anim-fade anim-d1 relative font-[family-name:var(--font-noto-serif)] text-4xl font-bold leading-tight text-[var(--ink)] sm:text-5xl">
+        사주편지
+      </h1>
+
+      <p className="anim-fade anim-d2 mt-4 text-[15px] tracking-wide text-[var(--ink-light)]">
+        우리 가족의 사주 이야기
+      </p>
+
+      <div className="anim-fade anim-d3 mt-10 flex items-center gap-3">
+        {[
+          { h: "木", c: "text-[#52796f]", bg: "bg-[#f0f7f0]", b: "border-[#b7d7b0]" },
+          { h: "火", c: "text-[#ae3f3d]", bg: "bg-[#fdf0ef]", b: "border-[#e5b4b3]" },
+          { h: "土", c: "text-[#8b6914]", bg: "bg-[#fdf6e3]", b: "border-[#dcc88c]" },
+          { h: "金", c: "text-[#71717a]", bg: "bg-[#f4f4f5]", b: "border-[#c4c4cc]" },
+          { h: "水", c: "text-[#2d5f8a]", bg: "bg-[#eef3fa]", b: "border-[#a3bfd9]" },
+        ].map((el) => (
+          <div key={el.h} className={`flex h-10 w-10 items-center justify-center rounded-xl border ${el.bg} ${el.b}`}>
+            <span className={`hanja text-base ${el.c}`}>{el.h}</span>
+          </div>
+        ))}
+      </div>
+
+      <div className="deco-line anim-fade anim-d3 mx-auto mt-10 w-48" />
+
+      <p className="anim-fade anim-d4 mt-8 max-w-sm text-[13px] leading-[1.9] text-[var(--ink-muted)]">
+        태어난 연월일시로 사주팔자를 풀고<br />
+        오행의 균형과 운의 흐름을 살펴봅니다.<br />
+        가족을 함께 등록하면 각자의 사주를<br />
+        한곳에서 비교하고 읽을 수 있습니다.
+      </p>
+
+      <button onClick={onGoFamilies}
+        className="anim-fade anim-d5 mt-10 rounded-lg bg-[var(--ink)] px-10 py-4 text-[15px] font-semibold tracking-wide text-[#f5f0e8] shadow-lg shadow-[var(--ink)]/10 transition-all hover:bg-[#1a1714] hover:shadow-xl active:scale-[0.97]">
+        가족 사주 보기
+      </button>
+
+      <p className="anim-fade anim-d6 mt-5 text-[10px] text-[var(--ink-muted)]">
+        입력 정보는 이 기기에만 저장됩니다
+      </p>
+    </div>
+  );
+}
+
 /* ────────── Group List ────────── */
-function GroupList({ groups, onSelect }: { groups: GroupData[]; onSelect: (id: number) => void }) {
+function GroupList({ groups, onSelect, onBack }: { groups: GroupData[]; onSelect: (id: number) => void; onBack: () => void }) {
   return (
     <div className="min-h-screen">
-      <header className="py-10 text-center">
-        <div className="mb-3 flex items-center justify-center gap-3">
-          <span className="h-px w-8 bg-gradient-to-r from-transparent to-[var(--accent-soft)]" />
-          <span className="hanja text-xs tracking-[0.3em] text-[var(--accent-soft)]">四柱八字</span>
-          <span className="h-px w-8 bg-gradient-to-l from-transparent to-[var(--accent-soft)]" />
+      <header className="sticky top-0 z-30 border-b border-[var(--border-light)] bg-[var(--bg-main)]/85 backdrop-blur-lg">
+        <div className="mx-auto flex max-w-2xl items-center justify-between px-4 py-2.5">
+          <button onClick={onBack} className="flex items-center gap-2">
+            <span className="text-[13px] text-[var(--ink-muted)]">←</span>
+            <span className="font-[family-name:var(--font-noto-serif)] text-base font-bold text-[var(--ink)]">
+              사주편지
+            </span>
+          </button>
+          <span className="text-[12px] text-[var(--ink-muted)]">{groups.length}개 가족</span>
         </div>
-        <h1 className="font-[family-name:var(--font-noto-serif)] text-2xl font-bold text-[var(--ink)] sm:text-3xl">
-          사주편지
-        </h1>
-        <p className="mt-2 text-[13px] text-[var(--ink-muted)]">우리 가족의 사주 이야기</p>
       </header>
 
-      <div className="mx-auto max-w-2xl px-4 pb-12">
+      <div className="mx-auto max-w-2xl px-4 py-6">
+        <div className="mb-5 text-center">
+          <h2 className="font-[family-name:var(--font-noto-serif)] text-lg font-bold text-[var(--ink)]">가족 목록</h2>
+          <p className="mt-1 text-[12px] text-[var(--ink-muted)]">가족을 선택하면 구성원의 사주를 볼 수 있습니다</p>
+        </div>
+
         <div className="grid gap-3 sm:grid-cols-2">
           {groups.map((g) => {
             const couple = coupleRoles(g.members);
@@ -81,7 +145,7 @@ function GroupList({ groups, onSelect }: { groups: GroupData[]; onSelect: (id: n
                   </div>
                 </div>
                 <div className="flex flex-wrap gap-1.5">
-                  {g.members
+                  {[...g.members]
                     .sort((a, b) => (ROLE_ORDER[a.role] ?? 9) - (ROLE_ORDER[b.role] ?? 9))
                     .map((m) => (
                     <span key={m.name}
@@ -100,53 +164,34 @@ function GroupList({ groups, onSelect }: { groups: GroupData[]; onSelect: (id: n
           })}
         </div>
       </div>
-
-      <footer className="border-t border-[var(--border-light)] py-8 text-center">
-        <p className="text-[11px] text-[var(--ink-muted)]">
-          사주팔자는 동양 철학에 기반한 참고 자료이며, 모든 선택은 본인의 의지에 달려 있습니다.
-        </p>
-        <p className="mt-2 text-[10px] text-[var(--border)]">사주편지 &copy; {new Date().getFullYear()}</p>
-      </footer>
     </div>
   );
 }
 
 /* ────────── Group Detail ────────── */
-function GroupDetail({
-  group,
-  onBack,
-}: {
-  group: GroupData;
-  onBack: () => void;
-}) {
+function GroupDetail({ group, onBack }: { group: GroupData; onBack: () => void }) {
   const sorted = [...group.members].sort((a, b) => (ROLE_ORDER[a.role] ?? 9) - (ROLE_ORDER[b.role] ?? 9));
   const [selectedIdx, setSelectedIdx] = useState(0);
   const [tab, setTab] = useState<"reading" | "compat">("reading");
   const selected = sorted[selectedIdx];
   const couple = coupleRoles(group.members);
 
-  // For compatibility component: transform to FamilyMember shape
-  const familyMembers = sorted
-    .filter((m) => m.saju)
-    .map((m) => ({
-      id: m.name,
-      name: m.name,
-      birthday: m.birthDate.replace(/-/g, ""),
-      time: "",
-      birthdayType: (m.calendar === "음력" ? "LUNAR" : "SOLAR") as "SOLAR" | "LUNAR",
-      gender: (m.gender === "M" ? "MALE" : "FEMALE") as "MALE" | "FEMALE",
-      result: m.saju!,
-    }));
+  const familyMembers = sorted.filter((m) => m.saju).map((m) => ({
+    id: m.name, name: m.name,
+    birthday: m.birthDate.replace(/-/g, ""), time: "",
+    birthdayType: (m.calendar === "음력" ? "LUNAR" : "SOLAR") as "SOLAR" | "LUNAR",
+    gender: (m.gender === "M" ? "MALE" : "FEMALE") as "MALE" | "FEMALE",
+    result: m.saju!,
+  }));
 
   return (
     <div className="min-h-screen">
-      {/* Header */}
       <header className="sticky top-0 z-30 border-b border-[var(--border-light)] bg-[var(--bg-main)]/85 backdrop-blur-lg">
         <div className="mx-auto flex max-w-2xl items-center justify-between px-4 py-2.5">
           <button onClick={onBack} className="flex items-center gap-2 text-[13px] text-[var(--ink-muted)] transition hover:text-[var(--ink)]">
             <span>←</span>
             <span className="font-[family-name:var(--font-noto-serif)] text-base font-bold text-[var(--ink)]">
-              사주편지
+              {groupLabel(group)}
             </span>
           </button>
           {couple && (
@@ -163,13 +208,6 @@ function GroupDetail({
       </header>
 
       <main className="mx-auto max-w-2xl px-4 py-4">
-        {/* Group info */}
-        <div className="mb-4 text-center">
-          <h2 className="text-[15px] font-bold text-[var(--ink)]">{groupLabel(group)}</h2>
-          <p className="text-[11px] text-[var(--ink-muted)]">{groupSubLabel(group)}</p>
-        </div>
-
-        {/* Member tabs */}
         {tab === "reading" && (
           <>
             <div className="no-scrollbar mb-5 flex gap-1.5 overflow-x-auto pb-1">
@@ -194,21 +232,16 @@ function GroupDetail({
               })}
             </div>
 
-            {/* Reading */}
             {selected?.saju ? (
               <SajuReading data={selected.saju} name={selected.name} />
             ) : (
               <div className="py-20 text-center">
                 <p className="text-sm text-[var(--ink-muted)]">사주 데이터를 불러올 수 없습니다.</p>
-                {selected?.birthTimeNote && (
-                  <p className="mt-2 text-xs text-[var(--ink-muted)]">참고: {selected.birthTimeNote}</p>
-                )}
               </div>
             )}
           </>
         )}
 
-        {/* Compatibility */}
         {tab === "compat" && couple && (
           <Compatibility members={familyMembers} />
         )}
@@ -226,17 +259,34 @@ function GroupDetail({
 /* ────────── Page ────────── */
 export default function Home() {
   const [groups, setGroups] = useState<GroupData[]>([]);
+  const [view, setView] = useState<"hero" | "list" | "detail">("hero");
   const [selectedGroupId, setSelectedGroupId] = useState<number | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    // Pre-load in background
     fetch("/api/groups")
       .then((r) => r.json())
-      .then((d) => { setGroups(d.groups || []); setLoading(false); })
-      .catch(() => setLoading(false));
+      .then((d) => setGroups(d.groups || []))
+      .catch(() => {});
   }, []);
 
   const selectedGroup = groups.find((g) => g.id === selectedGroupId);
+
+  const goToList = () => {
+    if (groups.length === 0) setLoading(true);
+    setView("list");
+    if (groups.length === 0) {
+      fetch("/api/groups")
+        .then((r) => r.json())
+        .then((d) => { setGroups(d.groups || []); setLoading(false); })
+        .catch(() => setLoading(false));
+    }
+  };
+
+  if (view === "hero") {
+    return <Hero onGoFamilies={goToList} />;
+  }
 
   if (loading) {
     return (
@@ -249,9 +299,15 @@ export default function Home() {
     );
   }
 
-  if (selectedGroup) {
-    return <GroupDetail group={selectedGroup} onBack={() => setSelectedGroupId(null)} />;
+  if (view === "detail" && selectedGroup) {
+    return <GroupDetail group={selectedGroup} onBack={() => setView("list")} />;
   }
 
-  return <GroupList groups={groups} onSelect={setSelectedGroupId} />;
+  return (
+    <GroupList
+      groups={groups}
+      onSelect={(id) => { setSelectedGroupId(id); setView("detail"); }}
+      onBack={() => setView("hero")}
+    />
+  );
 }
