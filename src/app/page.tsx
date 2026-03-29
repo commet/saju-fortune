@@ -8,7 +8,7 @@ import SajuForm from "@/components/SajuForm";
 
 interface MemberData {
   name: string; birthDate: string; calendar: string;
-  birthTime: string | null; birthTimeNote: string | null;
+  birthTime: string | null; birthTimeNote: string | null; birthTimeRange?: string[] | null;
   gender: string; role: string; hasSaju: boolean; saju: SajuResult | null;
 }
 interface GroupData {
@@ -514,7 +514,7 @@ function GroupDetail({ group, onBack }: { group: GroupData; onBack: () => void }
               })}
             </div>
             {selected?.saju ? (
-              <SajuReading data={selected.saju} name={selected.name} />
+              <SajuReading data={selected.saju} name={selected.name} hideTime={!selected.birthTime && !selected.birthTimeRange && selected.birthTimeNote === "시간 모름"} />
             ) : (
               <div className="py-20 text-center"><p className="text-sm text-[var(--ink-muted)]">사주 데이터를 불러올 수 없습니다.</p></div>
             )}

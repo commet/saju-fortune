@@ -828,12 +828,12 @@
           "birthDate": "1982-06-15",
           "calendar": "양력",
           "birthTime": null,
-          "birthTimeNote": "오후 낮",
+          "birthTimeNote": "시간 모름",
           "gender": "F",
           "role": "모",
-          "apiTime": "14",
+          "apiTime": "12",
           "apiBirthdayType": "SOLAR",
-          "cacheKey": "19820615_14_SOLAR_FEMALE",
+          "cacheKey": "19820615_12_SOLAR_FEMALE",
           "hasSaju": true
         },
         {

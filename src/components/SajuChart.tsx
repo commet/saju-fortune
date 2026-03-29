@@ -28,17 +28,23 @@ function Glyph({
   );
 }
 
-export default function SajuChart({ data }: { data: SajuResult }) {
-  const pillars = [
+export default function SajuChart({ data, hideTime }: { data: SajuResult; hideTime?: boolean }) {
+  const allPillars = [
     { id: "시", label: "시주 時柱", sub: "말년·자녀", gan: data.시간, ji: data.시지, me: false },
     { id: "일", label: "일주 日柱", sub: "나·배우자", gan: data.일간, ji: data.일지, me: true },
     { id: "월", label: "월주 月柱", sub: "청년·부모", gan: data.월간, ji: data.월지, me: false },
     { id: "연", label: "연주 年柱", sub: "초년·조상", gan: data.연간, ji: data.연지, me: false },
   ];
+  const pillars = hideTime ? allPillars.filter((p) => p.id !== "시") : allPillars;
 
   return (
     <div>
-      <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-4 sm:gap-3">
+      {hideTime && (
+        <p className="mb-3 text-center text-[11px] text-[var(--ink-muted)]">
+          태어난 시간을 알 수 없어 <strong className="text-[var(--ink-light)]">삼주(三柱)</strong>로 분석합니다
+        </p>
+      )}
+      <div className={`grid gap-2.5 sm:gap-3 ${hideTime ? "grid-cols-3" : "grid-cols-2 sm:grid-cols-4"}`}>
         {pillars.map((p) => (
           <div
             key={p.id}

@@ -34,7 +34,7 @@ function Section({
   );
 }
 
-export default function SajuReading({ data, name }: { data: SajuResult; name: string }) {
+export default function SajuReading({ data, name, hideTime }: { data: SajuResult; name: string; hideTime?: boolean }) {
   const reading = generateFullReading(data);
   const oh = data.일간.오행 as Ohaeng;
   const s = OHAENG_STYLE[oh];
@@ -84,7 +84,7 @@ export default function SajuReading({ data, name }: { data: SajuResult; name: st
 
       {/* 사주팔자 차트 */}
       <Section id="chart" title="사주팔자 四柱八字" subtitle="태어난 연·월·일·시의 천간과 지지" delay={0.15}>
-        <SajuChart data={data} />
+        <SajuChart data={data} hideTime={hideTime} />
         <p className="mt-4 text-center text-[11px] text-[var(--ink-muted)] leading-relaxed">
           일주(日柱) 천간이 &lsquo;나&rsquo;를 나타내는 <strong className="text-[var(--ink-light)]">일간(日干)</strong>입니다
         </p>
@@ -107,7 +107,7 @@ export default function SajuReading({ data, name }: { data: SajuResult; name: st
           </p>
         </div>
         <div className="grid gap-2 sm:grid-cols-2">
-          {reading.sipsung.map((item, i) => {
+          {reading.sipsung.filter((s) => !hideTime || !s.position.startsWith("시")).map((item, i) => {
             const posInfo: Record<string, string> = {
               연간: "조상·사회", 연지: "초년·외부",
               월간: "부모·직업", 월지: "형제·성장",
