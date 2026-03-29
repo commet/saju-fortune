@@ -1,0 +1,103 @@
+@import "tailwindcss";
+
+:root {
+  --bg-main: #f7f3ee;
+  --bg-card: #fffdf9;
+  --bg-warm: #faf6f0;
+  --ink: #2c2420;
+  --ink-light: #5c534b;
+  --ink-muted: #9c9186;
+  --accent: #8b6914;
+  --accent-soft: #c4a24e;
+  --accent-bg: #fdf6e3;
+  --border: #e8e0d4;
+  --border-light: #f0ebe3;
+}
+
+@theme inline {
+  --color-background: var(--bg-main);
+  --color-foreground: var(--ink);
+  --font-sans: var(--font-noto-kr);
+}
+
+body {
+  background: var(--bg-main);
+  color: var(--ink);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Subtle grain texture */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  z-index: 0;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 5px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #d4ccc0; border-radius: 3px; }
+
+/* Hide number spinner */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+input[type="number"] { -moz-appearance: textfield; }
+
+/* No scrollbar utility */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeInSlow {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+.anim-fade { animation: fadeIn 0.6s ease-out forwards; opacity: 0; }
+.anim-fade-slow { animation: fadeInSlow 1.2s ease-out forwards; opacity: 0; }
+.anim-float { animation: float 4s ease-in-out infinite; }
+.anim-d1 { animation-delay: 0.1s; }
+.anim-d2 { animation-delay: 0.2s; }
+.anim-d3 { animation-delay: 0.3s; }
+.anim-d4 { animation-delay: 0.4s; }
+.anim-d5 { animation-delay: 0.5s; }
+.anim-d6 { animation-delay: 0.6s; }
+
+/* Traditional decorative line */
+.deco-line {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border), var(--accent-soft), var(--border), transparent);
+}
+
+/* Hanja display */
+.hanja {
+  font-family: "Noto Serif KR", "Batang", serif;
+  font-weight: 700;
+}
+
+/* Card */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: 1.25rem;
+}
+.card-warm {
+  background: linear-gradient(135deg, var(--bg-card), var(--bg-warm));
+  border: 1px solid var(--border-light);
+  border-radius: 1.25rem;
+}

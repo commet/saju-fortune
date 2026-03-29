@@ -1,0 +1,652 @@
+{
+  "groups": [
+    {
+      "id": 1,
+      "note": "결혼 예정",
+      "members": [
+        {
+          "name": "이상욱",
+          "birthDate": "1987-03-07",
+          "calendar": "양력",
+          "birthTime": "05:25",
+          "birthTimeNote": null,
+          "gender": "M",
+          "role": "예비신랑",
+          "apiTime": "04",
+          "apiBirthdayType": "SOLAR",
+          "cacheKey": "19870307_04_SOLAR_MALE",
+          "hasSaju": true
+        },
+        {
+          "name": "김은별",
+          "birthDate": "1989-04-28",
+          "calendar": "양력",
+          "birthTime": "21:34",
+          "birthTimeNote": null,
+          "gender": "F",
+          "role": "예비신부",
+          "apiTime": "22",
+          "apiBirthdayType": "SOLAR",
+          "cacheKey": "19890428_22_SOLAR_FEMALE",
+          "hasSaju": true
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "note": null,
+      "members": [
+        {
+          "name": "김연호",
+          "birthDate": "1970-10-24",
+          "calendar": "음력",
+          "birthTime": "21:00",
+          "birthTimeNote": "밤 9시쯤 (대략)",
+          "gender": "M",
+          "role": "부",
+          "apiTime": "20",
+          "apiBirthdayType": "LUNAR",
+          "cacheKey": "19701024_20_LUNAR_MALE",
+          "hasSaju": true
+        },
+        {
+          "name": "배선화",
+          "birthDate": "1975-01-01",
+          "calendar": "음력",
+          "birthTime": "10:00",
+          "birthTimeNote": null,
+          "gender": "F",
+          "role": "모",
+          "apiTime": "10",
+          "apiBirthdayType": "LUNAR",
+          "cacheKey": "19750101_10_LUNAR_FEMALE",
+          "hasSaju": true
+        },
+        {
+          "name": "김가영",
+          "birthDate": "2000-10-30",
+          "calendar": "양력",
+          "birthTime": "22:30",
+          "birthTimeNote": null,
+          "gender": "F",
+          "role": "딸",
+          "apiTime": "22",
+          "apiBirthdayType": "SOLAR",
+          "cacheKey": "20001030_22_SOLAR_FEMALE",
+          "hasSaju": true
+        },
+        {
+          "name": "김가은",
+          "birthDate": "2003-11-12",
+          "calendar": "양력",
+          "birthTime": "23:30",
+          "birthTimeNote": null,
+          "gender": "F",
+          "role": "딸",
+          "apiTime": "00",
+          "apiBirthdayType": "SOLAR",
+          "cacheKey": "20031112_00_SOLAR_FEMALE",
+          "hasSaju": true
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "note": null,
+      "members": [
+        {
+          "name": "조성호",
+          "birthDate": "1978-06-25",
+          "calendar": "음력",
+          "birthTime": "14:00",
+          "birthTimeNote": null,
+          "gender": "M",
+          "role": "부",
+          "apiTime": "14",
+          "apiBirthdayType": "LUNAR",
+          "cacheKey": "19780625_14_LUNAR_MALE",
+          "hasSaju": true
+        },
+        {
+          "name": "송고은",
+          "birthDate": "1982-07-03",
+          "calendar": "양력",
+          "birthTime": "23:00",
+          "birthTimeNote": null,
+          "gender": "F",
+          "role": "모",
+          "apiTime": "22",
+          "apiBirthdayType": "SOLAR",
+          "cacheKey": "19820703_22_SOLAR_FEMALE",
+          "hasSaju": true
+        },
+        {
+          "name": "조민성",
+          "birthDate": "2016-12-23",
+          "calendar": "양력",
+          "birthTime": "22:00",
+          "birthTimeNote": null,
+          "gender": "M",
+          "role": "아들",
+          "apiTime": "22",
+          "apiBirthdayType": "SOLAR",
+          "cacheKey": "20161223_22_SOLAR_MALE",
+          "hasSaju": true
+        },
+        {
+          "name": "조민우",
+          "birthDate": "2024-02-24",
+          "calendar": "양력",
+          "birthTime": "10:00",
+          "birthTimeNote": null,
+          "gender": "M",
+          "role": "아들",
+          "apiTime": "10",
+          "apiBirthdayType": "SOLAR",
+          "cacheKey": "20240224_10_SOLAR_MALE",
+          "hasSaju": true
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "note": null,
+      "members": [
+        {
+          "name": "박병진",
+          "birthDate": "1970-09-11",
+          "calendar": "양력",
+          "birthTime": null,
+          "birthTimeNote": "오후 6시~7시 (18:00~19:00)",
+          "birthTimeRange": [
+            "18:00",
+            "19:00"
+          ],
+          "gender": "M",
+          "role": "부",
+          "apiTime": "18",
+          "apiBirthdayType": "SOLAR",
+          "cacheKey": "19700911_18_SOLAR_MALE",
+          "hasSaju": true
+        },
+        {
+          "name": "최정심",
+          "birthDate": "1968-01-05",
+          "calendar": "음력",
+          "birthTime": null,
+          "birthTimeNote": "오후 7시~8시 (19:00~20:00)",
+          "birthTimeRange": [
+            "19:00",
+            "20:00"
+          ],
+          "gender": "F",
+          "role": "모",
+          "apiTime": "20",
+          "apiBirthdayType": "LUNAR",
+          "cacheKey": "19680105_20_LUNAR_FEMALE",
+          "hasSaju": true
+        },
+        {
+          "name": "박채운",
+          "birthDate": "2002-02-24",
+          "calendar": "양력",
+          "birthTime": null,
+          "birthTimeNote": "저녁 9시~10시 (21:00~22:00)",
+          "birthTimeRange": [
+            "21:00",
+            "22:00"
+          ],
+          "gender": "M",
+          "role": "아들",
+          "apiTime": "22",
+          "apiBirthdayType": "SOLAR",
+          "cacheKey": "20020224_22_SOLAR_MALE",
+          "hasSaju": true
+        },
+        {
+          "name": "박채든",
+          "birthDate": "2003-03-11",
+          "calendar": "양력",
+          "birthTime": null,
+          "birthTimeNote": "저녁 8시~9시 (20:00~21:00)",
+          "birthTimeRange": [
+            "20:00",
+            "21:00"
+          ],
+          "gender": "M",
+          "role": "아들",
+          "apiTime": "20",
+          "apiBirthdayType": "SOLAR",
+          "cacheKey": "20030311_20_SOLAR_MALE",
+          "hasSaju": true
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "note": null,
+      "members": [
+        {
+          "name": "이은식",
+          "birthDate": "1961-08-24",
+          "calendar": "양력",
+          "birthTime": "12:00",
+          "birthTimeNote": null,
+          "gender": "M",
+          "role": "부",
+          "apiTime": "12",
+          "apiBirthdayType": "SOLAR",
+          "cacheKey": "19610824_12_SOLAR_MALE",
+          "hasSaju": true
+        },
+        {
+          "name": "김지하",
+          "birthDate": "1961-07-05",
+          "calendar": "음력",
+          "birthTime": null,
+          "birthTimeNote": "아침 시간? (본인 불확실)",
+          "gender": "F",
+          "role": "모",
+          "apiTime": "08",
+          "apiBirthdayType": "LUNAR",
+          "cacheKey": "19610705_08_LUNAR_FEMALE",
+          "hasSaju": true
+        },
+        {
+          "name": "이예찬",
+          "birthDate": "1993-09-13",
+          "calendar": "양력",
+          "birthTime": "13:00",
+          "birthTimeNote": null,
+          "gender": "M",
+          "role": "아들",
+          "apiTime": "12",
+          "apiBirthdayType": "SOLAR",
+          "cacheKey": "19930913_12_SOLAR_MALE",
+          "hasSaju": true
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "note": null,
+      "members": [
+        {
+          "name": "황상대",
+          "birthDate": "1968-07-21",
+          "calendar": "음력",
+          "birthTime": null,
+          "birthTimeNote": "오후 (정확한 시간 불명)",
+          "gender": "M",
+          "role": "부",
+          "apiTime": "14",
+          "apiBirthdayType": "LUNAR",
+          "cacheKey": "19680721_14_LUNAR_MALE",
+          "hasSaju": true
+        },
+        {
+          "name": "배선진",
+          "birthDate": "1968-11-29",
+          "calendar": "양력",
+          "birthTime": null,
+          "birthTimeNote": "오전 (정확한 시간 불명)",
+          "gender": "F",
+          "role": "모",
+          "apiTime": "08",
+          "apiBirthdayType": "SOLAR",
+          "cacheKey": "19681129_08_SOLAR_FEMALE",
+          "hasSaju": true
+        },
+        {
+          "name": "황연우",
+          "birthDate": "1999-06-09",
+          "calendar": "음력",
+          "birthTime": "15:00",
+          "birthTimeNote": "3시 (오후 추정)",
+          "gender": "M",
+          "role": "아들",
+          "apiTime": "14",
+          "apiBirthdayType": "LUNAR",
+          "cacheKey": "19990609_14_LUNAR_MALE",
+          "hasSaju": true
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "note": null,
+      "members": [
+        {
+          "name": "최원석",
+          "birthDate": "1981-08-03",
+          "calendar": "양력",
+          "birthTime": "07:00",
+          "birthTimeNote": null,
+          "gender": "M",
+          "role": "부",
+          "apiTime": "06",
+          "apiBirthdayType": "SOLAR",
+          "cacheKey": "19810803_06_SOLAR_MALE",
+          "hasSaju": true
+        },
+        {
+          "name": "염정란",
+          "birthDate": "1983-09-06",
+          "calendar": "양력",
+          "birthTime": null,
+          "birthTimeNote": "13시~14시 사이",
+          "birthTimeRange": [
+            "13:00",
+            "14:00"
+          ],
+          "gender": "F",
+          "role": "모",
+          "apiTime": "14",
+          "apiBirthdayType": "SOLAR",
+          "cacheKey": "19830906_14_SOLAR_FEMALE",
+          "hasSaju": true
+        },
+        {
+          "name": "최수아",
+          "birthDate": "2021-02-01",
+          "calendar": "양력",
+          "birthTime": "22:01",
+          "birthTimeNote": null,
+          "gender": "F",
+          "role": "딸",
+          "apiTime": "22",
+          "apiBirthdayType": "SOLAR",
+          "cacheKey": "20210201_22_SOLAR_FEMALE",
+          "hasSaju": true
+        },
+        {
+          "name": "최준서",
+          "birthDate": "2023-02-19",
+          "calendar": "양력",
+          "birthTime": "06:30",
+          "birthTimeNote": null,
+          "gender": "M",
+          "role": "아들",
+          "apiTime": "06",
+          "apiBirthdayType": "SOLAR",
+          "cacheKey": "20230219_06_SOLAR_MALE",
+          "hasSaju": true
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "note": null,
+      "members": [
+        {
+          "name": "김태호",
+          "birthDate": "1966-10-27",
+          "calendar": "음력",
+          "birthTime": null,
+          "birthTimeNote": null,
+          "gender": "M",
+          "role": "부",
+          "apiTime": "12",
+          "apiBirthdayType": "LUNAR",
+          "cacheKey": "19661027_12_LUNAR_MALE",
+          "hasSaju": true
+        },
+        {
+          "name": "백현희",
+          "birthDate": "1971-08-27",
+          "calendar": "음력",
+          "birthTime": null,
+          "birthTimeNote": "아침 8시~9시쯤 (08:00~09:00)",
+          "birthTimeRange": [
+            "08:00",
+            "09:00"
+          ],
+          "gender": "F",
+          "role": "모",
+          "apiTime": "08",
+          "apiBirthdayType": "LUNAR",
+          "cacheKey": "19710827_08_LUNAR_FEMALE",
+          "hasSaju": true
+        },
+        {
+          "name": "김하준",
+          "birthDate": "1998-10-19",
+          "calendar": "양력",
+          "birthTime": "15:00",
+          "birthTimeNote": null,
+          "gender": "M",
+          "role": "아들",
+          "apiTime": "14",
+          "apiBirthdayType": "SOLAR",
+          "cacheKey": "19981019_14_SOLAR_MALE",
+          "hasSaju": true
+        },
+        {
+          "name": "김인애",
+          "birthDate": "2000-12-27",
+          "calendar": "양력",
+          "birthTime": "18:00",
+          "birthTimeNote": null,
+          "gender": "F",
+          "role": "딸",
+          "apiTime": "18",
+          "apiBirthdayType": "SOLAR",
+          "cacheKey": "20001227_18_SOLAR_FEMALE",
+          "hasSaju": true
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "note": null,
+      "members": [
+        {
+          "name": "이규현",
+          "birthDate": "1956-12-15",
+          "calendar": "양력",
+          "birthTime": null,
+          "birthTimeNote": null,
+          "gender": "M",
+          "role": "부",
+          "apiTime": "12",
+          "apiBirthdayType": "SOLAR",
+          "cacheKey": "19561215_12_SOLAR_MALE",
+          "hasSaju": true
+        },
+        {
+          "name": "우미순",
+          "birthDate": "1960-07-09",
+          "calendar": "양력",
+          "birthTime": null,
+          "birthTimeNote": null,
+          "gender": "F",
+          "role": "모",
+          "apiTime": "12",
+          "apiBirthdayType": "SOLAR",
+          "cacheKey": "19600709_12_SOLAR_FEMALE",
+          "hasSaju": true
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "note": null,
+      "members": [
+        {
+          "name": "이용준",
+          "birthDate": "1985-11-26",
+          "calendar": "양력",
+          "birthTime": "19:00",
+          "birthTimeNote": null,
+          "gender": "M",
+          "role": "부",
+          "apiTime": "18",
+          "apiBirthdayType": "SOLAR",
+          "cacheKey": "19851126_18_SOLAR_MALE",
+          "hasSaju": true
+        },
+        {
+          "name": "염주란",
+          "birthDate": "1991-03-04",
+          "calendar": "양력",
+          "birthTime": "07:50",
+          "birthTimeNote": null,
+          "gender": "F",
+          "role": "모",
+          "apiTime": "08",
+          "apiBirthdayType": "SOLAR",
+          "cacheKey": "19910304_08_SOLAR_FEMALE",
+          "hasSaju": true
+        },
+        {
+          "name": "이은서",
+          "birthDate": "2023-12-15",
+          "calendar": "양력",
+          "birthTime": "08:28",
+          "birthTimeNote": null,
+          "gender": "F",
+          "role": "딸",
+          "apiTime": "08",
+          "apiBirthdayType": "SOLAR",
+          "cacheKey": "20231215_08_SOLAR_FEMALE",
+          "hasSaju": true
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "note": "모두 양력. 김범준·김세은은 남매, 이원민은 김세은의 남편",
+      "members": [
+        {
+          "name": "김범준",
+          "birthDate": "1963-09-21",
+          "calendar": "양력",
+          "birthTime": "12:00",
+          "birthTimeNote": null,
+          "gender": "M",
+          "role": "아들",
+          "apiTime": "12",
+          "apiBirthdayType": "SOLAR",
+          "cacheKey": "19630921_12_SOLAR_MALE",
+          "hasSaju": true
+        },
+        {
+          "name": "김세은",
+          "birthDate": "1995-10-12",
+          "calendar": "양력",
+          "birthTime": "06:43",
+          "birthTimeNote": null,
+          "gender": "F",
+          "role": "딸",
+          "apiTime": "06",
+          "apiBirthdayType": "SOLAR",
+          "cacheKey": "19951012_06_SOLAR_FEMALE",
+          "hasSaju": true
+        },
+        {
+          "name": "이원민",
+          "birthDate": "1990-08-20",
+          "calendar": "양력",
+          "birthTime": "07:00",
+          "birthTimeNote": null,
+          "gender": "M",
+          "role": "사위",
+          "apiTime": "06",
+          "apiBirthdayType": "SOLAR",
+          "cacheKey": "19900820_06_SOLAR_MALE",
+          "hasSaju": true
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "note": "모두 양력",
+      "members": [
+        {
+          "name": "이재호",
+          "birthDate": "1970-05-05",
+          "calendar": "양력",
+          "birthTime": "03:00",
+          "birthTimeNote": null,
+          "gender": "M",
+          "role": "부",
+          "apiTime": "02",
+          "apiBirthdayType": "SOLAR",
+          "cacheKey": "19700505_02_SOLAR_MALE",
+          "hasSaju": true
+        },
+        {
+          "name": "최보화",
+          "birthDate": "1973-02-15",
+          "calendar": "양력",
+          "birthTime": "05:00",
+          "birthTimeNote": null,
+          "gender": "F",
+          "role": "모",
+          "apiTime": "04",
+          "apiBirthdayType": "SOLAR",
+          "cacheKey": "19730215_04_SOLAR_FEMALE",
+          "hasSaju": true
+        },
+        {
+          "name": "이수린",
+          "birthDate": "2002-03-27",
+          "calendar": "양력",
+          "birthTime": "10:00",
+          "birthTimeNote": null,
+          "gender": "F",
+          "role": "딸",
+          "apiTime": "10",
+          "apiBirthdayType": "SOLAR",
+          "cacheKey": "20020327_10_SOLAR_FEMALE",
+          "hasSaju": true
+        },
+        {
+          "name": "이수정",
+          "birthDate": "2005-02-25",
+          "calendar": "양력",
+          "birthTime": "11:00",
+          "birthTimeNote": null,
+          "gender": "F",
+          "role": "딸",
+          "apiTime": "10",
+          "apiBirthdayType": "SOLAR",
+          "cacheKey": "20050225_10_SOLAR_FEMALE",
+          "hasSaju": true
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "note": null,
+      "members": [
+        {
+          "name": "김용연",
+          "birthDate": "1961-09-25",
+          "calendar": "음력",
+          "birthTime": "15:00",
+          "birthTimeNote": null,
+          "gender": "M",
+          "role": "부",
+          "apiTime": "14",
+          "apiBirthdayType": "LUNAR",
+          "cacheKey": "19610925_14_LUNAR_MALE",
+          "hasSaju": true
+        },
+        {
+          "name": "표순임",
+          "birthDate": "1964-07-24",
+          "calendar": "음력",
+          "birthTime": "05:30",
+          "birthTimeNote": null,
+          "gender": "F",
+          "role": "모",
+          "apiTime": "06",
+          "apiBirthdayType": "LUNAR",
+          "cacheKey": "19640724_06_LUNAR_FEMALE",
+          "hasSaju": true
+        }
+      ]
+    }
+  ]
+}
