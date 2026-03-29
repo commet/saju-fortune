@@ -502,7 +502,7 @@
     },
     {
       "id": 11,
-      "note": "모두 양력. 김범준·김세은은 남매, 이원민은 김세은의 남편",
+      "note": "모두 양력. 김범준(부)·김윤경(모), 자녀: 김진욱(아들)·김세은(딸). 이원민은 김세은의 남편",
       "members": [
         {
           "name": "김범준",
@@ -511,10 +511,40 @@
           "birthTime": "12:00",
           "birthTimeNote": null,
           "gender": "M",
-          "role": "아들",
+          "role": "부",
           "apiTime": "12",
           "apiBirthdayType": "SOLAR",
           "cacheKey": "19630921_12_SOLAR_MALE",
+          "hasSaju": true
+        },
+        {
+          "name": "김윤경",
+          "birthDate": "1967-02-23",
+          "calendar": "양력",
+          "birthTime": "07:30",
+          "birthTimeNote": null,
+          "gender": "F",
+          "role": "모",
+          "apiTime": "08",
+          "apiBirthdayType": "SOLAR",
+          "cacheKey": "19670223_08_SOLAR_FEMALE",
+          "hasSaju": true
+        },
+        {
+          "name": "김진욱",
+          "birthDate": "1991-10-29",
+          "calendar": "양력",
+          "birthTime": null,
+          "birthTimeNote": "오후 4시반~6시 사이 (16:30~18:00)",
+          "birthTimeRange": [
+            "16:30",
+            "18:00"
+          ],
+          "gender": "M",
+          "role": "아들",
+          "apiTime": "16",
+          "apiBirthdayType": "SOLAR",
+          "cacheKey": "19911029_16_SOLAR_MALE",
           "hasSaju": true
         },
         {

@@ -422,7 +422,7 @@ function GroupList({ groups, onSelect, onBack }: { groups: GroupData[]; onSelect
                       </span>
                     ))}
                   </div>
-                  {couple && (
+                  {g.members.filter((m) => m.saju).length >= 2 && (
                     <div className="absolute right-3 top-3 flex items-center gap-1 rounded-full bg-gradient-to-r from-[var(--accent)] to-[#a67c28] px-2.5 py-1 shadow-sm">
                       <span className="hanja text-[9px] text-white/80">合</span>
                       <span className="text-[10px] font-bold text-white">궁합</span>
@@ -477,7 +477,7 @@ function GroupDetail({ group, onBack }: { group: GroupData; onBack: () => void }
             <span>←</span>
             <span className="font-[family-name:var(--font-noto-serif)] text-base font-bold text-[var(--ink)]">{groupLabel(group)}</span>
           </button>
-          {couple && (
+          {familyMembers.length >= 2 && (
             <button onClick={() => setTab(tab === "compat" ? "reading" : "compat")}
               className={`flex items-center gap-1.5 rounded-lg px-4 py-2 text-[13px] font-bold shadow-sm transition-all active:scale-95 ${
                 tab === "compat"
@@ -520,7 +520,7 @@ function GroupDetail({ group, onBack }: { group: GroupData; onBack: () => void }
             )}
           </>
         )}
-        {tab === "compat" && couple && <Compatibility members={familyMembers} />}
+        {tab === "compat" && familyMembers.length >= 2 && <Compatibility members={familyMembers} />}
       </main>
 
       <footer className="mt-12 border-t border-[var(--border-light)] py-8 text-center">
