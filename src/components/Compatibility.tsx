@@ -71,17 +71,6 @@ export default function Compatibility({ members }: { members: FamilyMember[] }) 
               </div>
             </div>
 
-            {/* Score bar */}
-            <div className="mx-auto max-w-xs">
-              <div className="mb-1 flex items-center justify-between text-[11px] text-[var(--ink-muted)]">
-                <span>궁합 지수</span>
-                <span className="font-bold text-[var(--accent)]">{result.score}점</span>
-              </div>
-              <div className="h-2.5 w-full rounded-full bg-[var(--bg-main)] overflow-hidden">
-                <div className="h-full rounded-full bg-gradient-to-r from-[var(--accent-soft)] to-[var(--accent)] transition-all duration-700"
-                  style={{ width: `${result.score}%` }} />
-              </div>
-            </div>
           </div>
 
           {/* Summary */}
