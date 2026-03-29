@@ -469,68 +469,153 @@ export function analyzeCompatibility(a: SajuResult, b: SajuResult, nameA: string
   const details: { label: string; content: string }[] = [];
   let score = 60;
 
-  // 1. 천간합
+  const dmA = DM[a.일간.한글] || DM["갑"];
+  const dmB = DM[b.일간.한글] || DM["갑"];
+  const aOh = a.일간.오행 as Ohaeng;
+  const bOh = b.일간.오행 as Ohaeng;
+
+  // 1. 두 사람의 본질 소개
+  details.push({
+    label: "두 사람은 어떤 사람인가요?",
+    content:
+      `${nameA}은(는) ${dmA.title}.\n👉 ${dmA.intro}\n\n` +
+      `${nameB}은(는) ${dmB.title}.\n👉 ${dmB.intro}\n\n` +
+      `쉽게 말하면, ${dmA.symbol}과 ${dmB.symbol}의 만남이에요.`
+  });
+
+  // 2. 천간합
   const pair1 = a.일간.한글 + b.일간.한글;
   const pair2 = b.일간.한글 + a.일간.한글;
   const hap = CHEONGAN_HAP[pair1] || CHEONGAN_HAP[pair2];
 
-  const dmA = DM[a.일간.한글] || DM["갑"];
-  const dmB = DM[b.일간.한글] || DM["갑"];
-
   if (hap) {
-    details.push({ label: "천간합 — 자연스러운 끌림", content: `${nameA}의 ${a.일간.한자}(${dmA.symbol})과 ${nameB}의 ${b.일간.한자}(${dmB.symbol})이 천간합을 이루고 있어요.\n\n${hap}\n\n사주에서 천간합은 \"자연스럽게 끌리는 관계\"를 의미합니다. 인위적으로 만든 게 아니라, 기운 자체가 서로를 당기는 거예요.` });
+    details.push({
+      label: "💫 천간합 — 이건 꽤 특별한 조합이에요",
+      content:
+        `두 사람의 일간이 천간합을 이루고 있습니다!\n\n` +
+        `${hap}\n\n` +
+        `천간합이 뭐냐면요, 사주에서 "자연스럽게 끌리는 관계"를 뜻해요.\n` +
+        `억지로 맞춘 게 아니라, 기운 자체가 서로를 당기는 거예요.\n\n` +
+        `👉 쉽게 말하면: 만나면 왠지 편하고, 통하는 느낌이 드는 사이입니다.`
+    });
     score += 15;
   } else {
-    details.push({ label: "일간 관계", content: `${nameA}은(는) ${dmA.title}(${dmA.symbol}), ${nameB}은(는) ${dmB.title}(${dmB.symbol})입니다.\n\n천간합은 아니지만, 각자의 기운이 어떻게 어울리느냐에 따라 좋은 관계를 충분히 만들 수 있어요.` });
+    details.push({
+      label: "일간으로 본 관계",
+      content:
+        `천간합(자연스러운 끌림)은 아니지만, 그렇다고 나쁜 게 아니에요.\n\n` +
+        `${dmA.symbol}과 ${dmB.symbol}은 각자 고유한 에너지가 있어서,\n` +
+        `서로에게 없는 것을 배울 수 있는 관계입니다.\n\n` +
+        `👉 핵심은 "다름을 인정하는 것"이에요. 다르다 = 나쁘다가 아니거든요.`
+    });
   }
 
-  // 2. 오행 관계
-  const aOh = a.일간.오행 as Ohaeng;
-  const bOh = b.일간.오행 as Ohaeng;
+  // 3. 오행 관계 (비유 강화)
   const isSS = OHAENG_SANGSAENG.some(([x, y]) => (x === aOh && y === bOh) || (x === bOh && y === aOh));
   const isSG = OHAENG_SANGGEUK.some(([x, y]) => (x === aOh && y === bOh) || (x === bOh && y === aOh));
 
+  const ohEmoji: Record<Ohaeng, string> = { 목: "🌿", 화: "🔥", 토: "🏔", 금: "⚔", 수: "🌊" };
+
   if (isSS) {
-    details.push({ label: "오행 상생 — 서로를 살려주는 관계", content: `${nameA}의 ${OH_NAME[aOh]}과 ${nameB}의 ${OH_NAME[bOh]}은 상생 관계예요.\n\n상생은 한쪽이 다른 쪽을 도와주는 관계입니다. 함께 있으면 서로의 기운이 살아나고, 자연스럽게 좋은 영향을 주고받아요.` });
+    details.push({
+      label: `${ohEmoji[aOh]}${ohEmoji[bOh]} 상생 — 함께 있으면 살아나는 관계`,
+      content:
+        `${nameA}의 ${OH_NAME[aOh]}과 ${nameB}의 ${OH_NAME[bOh]}은 상생 관계예요.\n\n` +
+        `상생이 뭐냐면, 한쪽이 다른 쪽에게 에너지를 주는 거예요.\n` +
+        `나무가 불을 살리고, 불이 흙을 살리고... 이런 자연의 순환처럼요.\n\n` +
+        `👉 함께 있으면 서로의 기운이 올라가고, 자연스럽게 좋은 영향을 주고받아요.\n\n` +
+        `실생활에서는?\n` +
+        `• 같이 있으면 왠지 기분이 좋아지는 느낌\n` +
+        `• 상대가 나에게 힘을 주는 느낌\n` +
+        `• 함께 뭔가 하면 결과가 더 잘 나오는 경험`
+    });
     score += 10;
   } else if (isSG) {
-    details.push({ label: "오행 상극 — 다르기에 자극이 되는 관계", content: `${nameA}의 ${OH_NAME[aOh]}과 ${nameB}의 ${OH_NAME[bOh]}은 상극 관계예요.\n\n상극이라고 나쁜 게 아니에요. 서로 다른 점이 갈등이 될 수도 있지만, 그 차이가 서로를 성장시키는 자극이 되기도 합니다. 핵심은 \"다름을 인정하는 것\"이에요.` });
+    details.push({
+      label: `${ohEmoji[aOh]}${ohEmoji[bOh]} 상극 — 다르기에 자극이 되는 관계`,
+      content:
+        `${nameA}의 ${OH_NAME[aOh]}과 ${nameB}의 ${OH_NAME[bOh]}은 상극 관계예요.\n\n` +
+        `"상극"이라고 하면 좀 무섭게 들리죠? 근데 나쁜 게 아닙니다.\n\n` +
+        `쉽게 말하면 "서로 다른 타입"이라는 거예요.\n` +
+        `같은 방식으로 생각하지 않아서 부딪힐 수도 있지만,\n` +
+        `그 차이가 오히려 서로를 성장시키는 자극이 되기도 해요.\n\n` +
+        `👉 핵심: "왜 저 사람은 저러지?" 대신 "아, 저 사람은 그런 방식이구나"로 바꾸면 됩니다.\n\n` +
+        `실생활에서는?\n` +
+        `• 의견 충돌이 있지만, 결과적으로 더 좋은 결정을 내리게 됨\n` +
+        `• 내가 못 보는 걸 상대가 봐줌\n` +
+        `• 적당한 긴장감이 관계를 무료하지 않게 만듦`
+    });
     score -= 5;
   } else if (aOh === bOh) {
-    details.push({ label: "같은 오행 — 깊이 이해하는 관계", content: `둘 다 ${OH_NAME[aOh]}이에요.\n\n같은 기운이라 서로를 깊이 이해할 수 있습니다. 대신 비슷한 약점도 공유하게 되어서, 서로를 보완해줄 수 있는 다른 요소가 있으면 더 좋아요.` });
+    details.push({
+      label: `${ohEmoji[aOh]}${ohEmoji[bOh]} 같은 오행 — 말 안 해도 통하는 관계`,
+      content:
+        `둘 다 ${OH_NAME[aOh]} 기운이에요.\n\n` +
+        `같은 오행이라는 건, 비슷한 파장으로 살아간다는 뜻이에요.\n` +
+        `말 안 해도 "아, 그 느낌 알지" 하는 순간이 많을 거예요.\n\n` +
+        `👉 장점: 서로를 깊이 이해할 수 있어요.\n` +
+        `⚠ 주의: 비슷한 약점도 공유하게 돼서, 같이 한쪽으로 치우칠 수 있어요.\n\n` +
+        `보완법: 둘 다 없는 기운은 취미, 환경, 다른 사람으로 채워가면 됩니다.`
+    });
     score += 5;
   } else {
-    details.push({ label: "오행 관계", content: `${nameA}의 ${OH_NAME[aOh]}과 ${nameB}의 ${OH_NAME[bOh]}은 직접적인 상생/상극은 아니에요.\n\n각자 독립적인 에너지를 가지고 있어서, 서로의 영역을 존중하며 함께할 수 있는 관계입니다.` });
+    details.push({
+      label: `${ohEmoji[aOh]}${ohEmoji[bOh]} 각자의 영역을 가진 관계`,
+      content:
+        `${nameA}의 ${OH_NAME[aOh]}과 ${nameB}의 ${OH_NAME[bOh]}은 직접적인 상생/상극은 아니에요.\n\n` +
+        `이건 "각자 자기 세계가 있는 관계"라는 뜻이에요.\n` +
+        `서로 간섭이 적고, 독립적으로 잘 지낼 수 있는 구조입니다.\n\n` +
+        `👉 함께하면서도 각자의 공간을 존중해주는 게 이 관계의 핵심이에요.`
+    });
   }
 
-  // 3. 오행 보완
+  // 4. 오행 보완
   const aMissing = (Object.entries(a.오행_갯수) as [Ohaeng, number][]).filter(([, v]) => v === 0).map(([k]) => k);
   const bMissing = (Object.entries(b.오행_갯수) as [Ohaeng, number][]).filter(([, v]) => v === 0).map(([k]) => k);
   const aStrong = (Object.entries(a.오행_갯수) as [Ohaeng, number][]).filter(([, v]) => v >= 2).map(([k]) => k);
   const bStrong = (Object.entries(b.오행_갯수) as [Ohaeng, number][]).filter(([, v]) => v >= 2).map(([k]) => k);
 
-  const fills: string[] = [];
   const bFillsA = bStrong.filter((k) => aMissing.includes(k));
   const aFillsB = aStrong.filter((k) => bMissing.includes(k));
 
-  if (bFillsA.length > 0) fills.push(`${nameB}이(가) ${nameA}에게 부족한 ${bFillsA.map((k) => OH_NAME[k]).join(", ")} 기운을 채워줍니다`);
-  if (aFillsB.length > 0) fills.push(`${nameA}이(가) ${nameB}에게 부족한 ${aFillsB.map((k) => OH_NAME[k]).join(", ")} 기운을 채워줍니다`);
-
-  if (fills.length > 0) {
-    details.push({ label: "오행 보완 — 서로의 빈자리를 채우는 관계", content: `${fills.join(".\n")}.\n\n이건 정말 좋은 신호예요. 한 사람에게 없는 기운을 다른 사람이 채워주는 구조이기 때문에, 함께 있으면 더 완성도 높은 조합이 됩니다.` });
+  if (bFillsA.length > 0 || aFillsB.length > 0) {
+    let content = "이건 꽤 좋은 신호예요!\n\n";
+    if (bFillsA.length > 0) {
+      content += `${nameA}에게 없는 ${bFillsA.map((k) => OH_NAME[k]).join(", ")} 기운을 ${nameB}이(가) 가지고 있어요.\n`;
+      content += `👉 ${nameB}이(가) ${nameA}의 빈자리를 채워주는 구조입니다.\n\n`;
+    }
+    if (aFillsB.length > 0) {
+      content += `반대로, ${nameB}에게 없는 ${aFillsB.map((k) => OH_NAME[k]).join(", ")} 기운을 ${nameA}이(가) 가지고 있어요.\n`;
+      content += `👉 ${nameA}이(가) ${nameB}의 빈자리를 채워주는 구조예요.\n\n`;
+    }
+    content += "서로에게 없는 걸 가진 사람이 옆에 있다는 건,\n혼자서는 불완전한 것을 둘이 함께하면 완성할 수 있다는 뜻이에요.";
+    details.push({ label: "🧩 서로의 빈자리를 채워주는 관계", content });
     score += 10;
   }
+
+  // 5. 관계 팁
+  const tips: string[] = [];
+  if (isSG) tips.push("의견이 다를 때는 \"맞다/틀리다\"가 아니라 \"다르다\"로 받아들이기");
+  if (aOh === bOh) tips.push("비슷한 약점이 있으니, 서로 견제보다 보완해주기");
+  if (aMissing.includes("화" as Ohaeng) && bMissing.includes("화" as Ohaeng)) tips.push("둘 다 시작이 느린 편이니, 한 사람이라도 먼저 움직이기");
+  if (aMissing.includes("수" as Ohaeng) || bMissing.includes("수" as Ohaeng)) tips.push("감정 표현이 서투른 쪽이 있으니, 말로 하는 소통 연습하기");
+  tips.push("사주는 참고일 뿐, 관계를 만드는 건 결국 두 사람의 노력이에요");
+
+  details.push({
+    label: "💡 이 관계를 더 좋게 만드는 팁",
+    content: tips.map((t) => `• ${t}`).join("\n"),
+  });
 
   score = Math.min(Math.max(score, 30), 95);
 
   // Summary
-  const summary = `${nameA}(${a.일간.한자}, ${dmA.symbol})과 ${nameB}(${b.일간.한자}, ${dmB.symbol})의 궁합입니다.\n\n` +
-    `${dmA.symbol}과 ${dmB.symbol}의 만남 — ` +
+  const summary =
+    `${dmA.symbol}과 ${dmB.symbol}의 만남이에요.\n\n` +
     (score >= 75
-      ? "기운이 서로 잘 어울리는 좋은 조합이에요. 함께 있을 때 서로의 장점이 더 빛나고, 자연스럽게 좋은 방향으로 흘러갈 수 있는 관계입니다."
+      ? `서로의 기운이 잘 어울리는 조합입니다. 함께 있을 때 각자의 장점이 더 빛나고, 서로에게 좋은 영향을 주는 관계예요.\n\n👉 한마디로: "같이 있으면 더 좋아지는 사이"`
       : score >= 60
-        ? "서로 다른 기운을 가지고 있어서 새로운 것을 배울 수 있는 관계예요. 차이를 이해하고 존중하면 오히려 더 깊은 관계로 발전할 수 있습니다."
-        : "기질적으로 다른 부분이 있어서 노력이 필요한 관계예요. 하지만 궁합은 숙명이 아니라 참고 자료입니다. 서로를 이해하려는 마음이 가장 중요해요.");
+        ? `서로 다른 에너지를 가지고 있어서, 새로운 것을 배울 수 있는 관계예요. 차이를 이해하고 존중하면 오히려 더 깊어질 수 있습니다.\n\n👉 한마디로: "다르기에 배우는 사이"`
+        : `기질적으로 다른 부분이 있어서 의식적인 노력이 필요해요. 하지만 궁합은 숙명이 아니라 참고 자료입니다.\n\n👉 한마디로: "노력하면 더 단단해지는 사이"`);
 
   return { summary, details, score };
 }
