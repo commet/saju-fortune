@@ -287,44 +287,19 @@ function buildPersonality(data: SajuResult, dm: typeof DM[string]): string {
 
   // 오행 불균형에서 오는 성격 포인트
   if (missing.length > 0 || strong.length > 0) {
-    text += "── 오행으로 보는 성격 포인트\n\n";
+    text += "──\n";
 
-    if (strong.includes("화" as Ohaeng)) {
-      text += `🔥 화(火)가 ${counts["화"]}개 — 감정과 열정이 강합니다.\n`;
-      text += `• 추진력 강함\n• 성격이 뜨거운 편\n• 시작하는 힘이 좋지만, 지속력은 관리 필요\n\n`;
-    }
-    if (strong.includes("토" as Ohaeng)) {
-      text += `🏔 토(土)가 ${counts["토"]}개 — 현실감각과 책임감이 강합니다.\n`;
-      text += `• 묵묵히 해내는 타입\n• 안정을 추구\n• 대신 변화에 느릴 수 있음\n\n`;
-    }
-    if (strong.includes("금" as Ohaeng)) {
-      text += `⚔ 금(金)이 ${counts["금"]}개 — 판단력과 결단력이 뛰어납니다.\n`;
-      text += `• 논리적이고 현실적\n• 칼같은 결정력\n• 때로 차갑게 느껴질 수 있음\n\n`;
-    }
-    if (strong.includes("수" as Ohaeng)) {
-      text += `🌊 수(水)가 ${counts["수"]}개 — 머리가 잘 돌아가고 유연합니다.\n`;
-      text += `• 상황 판단이 빠름\n• 적응력 뛰어남\n• 생각이 너무 많아질 수 있음\n\n`;
-    }
-    if (strong.includes("목" as Ohaeng)) {
-      text += `🌿 목(木)이 ${counts["목"]}개 — 성장 지향적이고 진취적입니다.\n`;
-      text += `• 앞으로 나아가려는 힘이 강함\n• 계획을 세우고 실행\n• 때로 조급할 수 있음\n\n`;
-    }
+    if (strong.includes("화" as Ohaeng)) text += `화(火)가 ${counts["화"]}개로 강해서 감정과 열정이 뜨거운 편이에요. 추진력은 좋지만 지속력은 의식적으로 관리가 필요합니다.\n\n`;
+    if (strong.includes("토" as Ohaeng)) text += `토(土)가 ${counts["토"]}개로 강해서 묵묵히 해내는 현실형입니다. 안정을 추구하지만, 변화에 느릴 수 있어요.\n\n`;
+    if (strong.includes("금" as Ohaeng)) text += `금(金)이 ${counts["금"]}개로 강해서 판단이 빠르고 논리적이에요. 칼같은 결정력이 있지만, 때로 차갑게 느껴질 수 있습니다.\n\n`;
+    if (strong.includes("수" as Ohaeng)) text += `수(水)가 ${counts["수"]}개로 강해서 머리 회전이 빠르고 적응력이 뛰어나요. 다만 생각이 너무 많아질 수 있습니다.\n\n`;
+    if (strong.includes("목" as Ohaeng)) text += `목(木)이 ${counts["목"]}개로 강해서 늘 앞으로 나아가려는 에너지가 있어요. 계획을 세우고 실행하는 힘이 좋습니다.\n\n`;
 
-    if (missing.includes("목" as Ohaeng)) {
-      text += `❌ 목(木) 없음 — 유연성이 부족할 수 있어요.\n• 타협이 어려운 편\n• 장기 계획보다 눈앞의 현실에 집중\n\n`;
-    }
-    if (missing.includes("화" as Ohaeng)) {
-      text += `❌ 화(火) 없음 — 추진력이 약할 수 있어요.\n• 시작이 신중하고 결정이 느림\n• 대신 실수는 적은 타입\n\n`;
-    }
-    if (missing.includes("토" as Ohaeng)) {
-      text += `❌ 토(土) 없음 — 안정감이 부족할 수 있어요.\n• 변화가 잦고 중심잡기가 어려움\n• 대신 자유롭고 유연한 삶의 구조\n\n`;
-    }
-    if (missing.includes("금" as Ohaeng)) {
-      text += `❌ 금(金) 없음 — 결단력이 약할 수 있어요.\n• 우유부단해지기 쉬움\n• 대신 부드럽고 포용력 있는 성격\n\n`;
-    }
-    if (missing.includes("수" as Ohaeng)) {
-      text += `❌ 수(水) 없음 — 소통력이 약할 수 있어요.\n• 감정 표현이 서투른 편\n• 대신 행동으로 보여주는 타입\n\n`;
-    }
+    if (missing.includes("목" as Ohaeng)) text += `목(木)이 없어서 유연성이 부족할 수 있어요. 타협보다 고집 쪽으로 갈 수 있습니다.\n\n`;
+    if (missing.includes("화" as Ohaeng)) text += `화(火)가 없어서 시작이 신중하고 결정이 느린 편이에요. 대신 실수는 적은 타입입니다.\n\n`;
+    if (missing.includes("토" as Ohaeng)) text += `토(土)가 없어서 안정감보다 자유로움을 추구하는 구조예요.\n\n`;
+    if (missing.includes("금" as Ohaeng)) text += `금(金)이 없어서 결단이 느릴 수 있지만, 그만큼 부드럽고 포용력이 있어요.\n\n`;
+    if (missing.includes("수" as Ohaeng)) text += `수(水)가 없어서 감정 표현이 서투른 편이에요. 행동으로 보여주는 타입입니다.\n\n`;
   }
 
   return text;
@@ -409,13 +384,11 @@ export function generateFullReading(data: SajuResult): FullReading {
   let overview = opening;
   overview += personality;
 
-  // 강점/약점 정리
-  overview += "── 핵심 정리\n\n";
-  overview += `✔ 강점: ${dm.strengths}\n`;
-  overview += `✔ 잘 맞는 방향: ${dm.career}\n`;
-  overview += `⚠ 주의할 점: ${dm.challenges}\n`;
-  overview += `💕 관계: ${dm.relationship}\n\n`;
-
+  overview += "──\n";
+  overview += `${dm.strengths}\n\n`;
+  overview += `잘 맞는 방향으로는 ${dm.career}\n\n`;
+  overview += `다만, ${dm.challenges}\n\n`;
+  overview += `관계에서는 ${dm.relationship}\n\n`;
   overview += summaryLine;
 
   if (checklist) {
