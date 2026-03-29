@@ -3,9 +3,9 @@
 import { useState, useEffect } from "react";
 
 const SECTIONS = [
-  { id: "summary", label: "종합" },
-  { id: "chart", label: "명식" },
   { id: "ohaeng", label: "오행" },
+  { id: "summary", label: "풀이" },
+  { id: "chart", label: "명식" },
   { id: "sipsung", label: "십성" },
   { id: "daeun", label: "운세" },
 ];
