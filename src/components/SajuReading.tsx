@@ -76,41 +76,66 @@ export default function SajuReading({ data, name, hideTime }: { data: SajuResult
         </section>
       )}
 
-      {/* 2. 오행 성격 — 통일된 카드 안에 리스트 */}
+      {/* 2. 오행 성격 — 좌측 강조 바 */}
       {ohaengPersonality && (
         <section className="anim-fade card-warm p-5 sm:p-7" style={{ animationDelay: "0.1s" }}>
           <h3 className="mb-1 font-[family-name:var(--font-noto-serif)] text-base font-bold text-[var(--ink)] sm:text-[17px]">
             오행으로 보는 성격
           </h3>
           <div className="deco-line mb-4 mt-3" />
-          <div className="whitespace-pre-line text-[13px] leading-[1.9] text-[var(--ink-light)]">{ohaengPersonality}</div>
+          <div className="space-y-3">
+            {ohaengPersonality.split("\n\n").filter(Boolean).map((para, i) => (
+              <div key={i} className="flex gap-3">
+                <div className={`mt-1 h-auto w-[3px] shrink-0 rounded-full ${
+                  para.includes("화(火)") ? "bg-[#ae3f3d]" :
+                  para.includes("토(土)") ? "bg-[#a67c28]" :
+                  para.includes("금(金)") ? "bg-[#71717a]" :
+                  para.includes("수(水)") ? "bg-[#2d5f8a]" :
+                  para.includes("목(木)") ? "bg-[#52796f]" :
+                  "bg-[var(--border)]"
+                }`} />
+                <p className="text-[13px] leading-[1.9] text-[var(--ink-light)]">{para}</p>
+              </div>
+            ))}
+          </div>
         </section>
       )}
 
-      {/* 3. 핵심 정리 — 깔끔한 하나의 카드 */}
+      {/* 3. 핵심 정리 — 👉 한마디 강조 */}
       {coreSummary && (
         <section className="anim-fade card-warm p-5 sm:p-7" style={{ animationDelay: "0.15s" }}>
           <h3 className="mb-1 font-[family-name:var(--font-noto-serif)] text-base font-bold text-[var(--ink)] sm:text-[17px]">
             핵심 정리
           </h3>
           <div className="deco-line mb-4 mt-3" />
-          <div className="whitespace-pre-line text-[13px] leading-[1.9] text-[var(--ink-light)]">{coreSummary}</div>
+          <div className="space-y-3">
+            {coreSummary.split("\n\n").filter(Boolean).map((para, i) => {
+              const isHighlight = para.startsWith("👉");
+              return isHighlight ? (
+                <div key={i} className="rounded-xl bg-[var(--accent-bg)] px-4 py-3" style={{ border: "1px solid var(--accent-soft)" }}>
+                  <p className="text-[14px] font-bold leading-[1.8] text-[var(--accent)]">{para}</p>
+                </div>
+              ) : (
+                <p key={i} className="text-[13px] leading-[1.9] text-[var(--ink-light)]">{para}</p>
+              );
+            })}
+          </div>
         </section>
       )}
 
-      {/* 4. 공감 체크리스트 — 텍스트만, 체크박스 없음 */}
+      {/* 4. 공감 체크리스트 — 부드러운 카드 리스트 */}
       {checkItems.length > 0 && (
-        <section className="anim-fade card-warm p-5 sm:p-7" style={{ animationDelay: "0.2s" }}>
+        <section className="anim-fade card relative overflow-hidden p-5 sm:p-7" style={{ animationDelay: "0.2s", background: "linear-gradient(160deg, var(--bg-card), #f5f0e8)" }}>
+          <div className="pointer-events-none absolute -right-6 -bottom-6 h-20 w-20 rounded-full bg-[var(--accent-soft)] opacity-[0.06]" />
           <h3 className="mb-1 font-[family-name:var(--font-noto-serif)] text-base font-bold text-[var(--ink)] sm:text-[17px]">
             혹시 이런 느낌 있으셨나요?
           </h3>
-          <p className="mt-0.5 text-[11px] text-[var(--ink-muted)]">해당되는 게 많을수록 사주가 잘 맞는 거예요</p>
+          <p className="mt-0.5 text-[11px] text-[var(--ink-muted)]">해당되는 게 많다면 사주가 잘 맞는 거예요</p>
           <div className="deco-line mb-4 mt-3" />
-          <div className="space-y-2">
+          <div className="space-y-2.5">
             {checkItems.map((item, i) => (
-              <div key={i} className="flex items-start gap-2.5 text-[13px] leading-[1.8] text-[var(--ink-light)]">
-                <span className="mt-0.5 shrink-0 text-[var(--ink-muted)]">·</span>
-                <span>{item}</span>
+              <div key={i} className="rounded-lg bg-white/60 px-4 py-2.5 text-[13px] leading-[1.8] text-[var(--ink)]">
+                &ldquo;{item}&rdquo;
               </div>
             ))}
           </div>
