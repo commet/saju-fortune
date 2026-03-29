@@ -585,15 +585,6 @@
           "role": "모"
         },
         {
-          "name": "송향기",
-          "birthDate": "1982-06-15",
-          "calendar": "양력",
-          "birthTime": null,
-          "birthTimeNote": "오후 낮",
-          "gender": "F",
-          "role": "딸"
-        },
-        {
           "name": "송슬기",
           "birthDate": "1988-03-18",
           "calendar": "양력",
@@ -601,6 +592,39 @@
           "birthTimeNote": "오전",
           "gender": "F",
           "role": "딸"
+        }
+      ]
+    },
+    {
+      "id": 18,
+      "note": null,
+      "members": [
+        {
+          "name": "루이환",
+          "birthDate": "1987-11-18",
+          "calendar": "양력",
+          "birthTime": null,
+          "birthTimeNote": "시간 모름",
+          "gender": "M",
+          "role": "부"
+        },
+        {
+          "name": "송향기",
+          "birthDate": "1982-06-15",
+          "calendar": "양력",
+          "birthTime": null,
+          "birthTimeNote": "오후 낮",
+          "gender": "F",
+          "role": "모"
+        },
+        {
+          "name": "루명진",
+          "birthDate": "2015-12-22",
+          "calendar": "양력",
+          "birthTime": "21:17",
+          "birthTimeNote": "미국 동부시간 07:17 → 한국시간 21:17",
+          "gender": "M",
+          "role": "아들"
         }
       ]
     }
