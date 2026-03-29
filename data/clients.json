@@ -175,15 +175,6 @@
           "birthTimeNote": "아침 시간? (본인 불확실)",
           "gender": "F",
           "role": "모"
-        },
-        {
-          "name": "이예찬",
-          "birthDate": "1993-09-13",
-          "calendar": "양력",
-          "birthTime": "13:00",
-          "birthTimeNote": null,
-          "gender": "M",
-          "role": "아들"
         }
       ]
     },
@@ -583,15 +574,6 @@
           "birthTimeRange": ["09:00", "10:00"],
           "gender": "F",
           "role": "모"
-        },
-        {
-          "name": "송슬기",
-          "birthDate": "1988-03-18",
-          "calendar": "양력",
-          "birthTime": null,
-          "birthTimeNote": "오전",
-          "gender": "F",
-          "role": "딸"
         }
       ]
     },
@@ -625,6 +607,45 @@
           "birthTimeNote": "미국 동부시간 07:17 → 한국시간 21:17",
           "gender": "M",
           "role": "아들"
+        }
+      ]
+    },
+    {
+      "id": 19,
+      "note": "결혼 예정",
+      "members": [
+        {
+          "name": "이예찬",
+          "birthDate": "1993-09-13",
+          "calendar": "양력",
+          "birthTime": "13:00",
+          "birthTimeNote": null,
+          "gender": "M",
+          "role": "예비신랑"
+        },
+        {
+          "name": "송슬기",
+          "birthDate": "1988-03-18",
+          "calendar": "양력",
+          "birthTime": null,
+          "birthTimeNote": "오전",
+          "gender": "F",
+          "role": "예비신부"
+        }
+      ]
+    },
+    {
+      "id": 20,
+      "note": null,
+      "members": [
+        {
+          "name": "한지희",
+          "birthDate": "1990-03-24",
+          "calendar": "양력",
+          "birthTime": null,
+          "birthTimeNote": "시간 모름",
+          "gender": "F",
+          "role": "본인"
         }
       ]
     }
