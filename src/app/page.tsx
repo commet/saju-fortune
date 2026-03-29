@@ -249,11 +249,14 @@ function SearchTab({ allMembers, onSelectGroup }: {
     );
   }, [query, allMembers]);
 
+  const [directError, setDirectError] = useState<string | null>(null);
+
   const handleDirect = useCallback(async (form: {
     name: string; year: string; month: string; day: string;
     time: string; birthdayType: "SOLAR" | "LUNAR"; gender: "MALE" | "FEMALE";
   }) => {
     setDirectLoading(true);
+    setDirectError(null);
     const birthday = `${form.year}${form.month.padStart(2, "0")}${form.day.padStart(2, "0")}`;
     try {
       const res = await fetch("/api/saju", {
@@ -265,8 +268,12 @@ function SearchTab({ allMembers, onSelectGroup }: {
       if (res.ok && json.data) {
         setDirectResult(json.data);
         setDirectName(form.name);
+      } else {
+        setDirectError(json.error || "사주 정보를 불러올 수 없습니다.");
       }
-    } catch { /* ignore */ } finally {
+    } catch {
+      setDirectError("서버에 연결할 수 없습니다. 잠시 후 다시 시도해주세요.");
+    } finally {
       setDirectLoading(false);
     }
   }, []);
@@ -334,6 +341,9 @@ function SearchTab({ allMembers, onSelectGroup }: {
         {showDirect && (
           <div className="mt-3 card p-5">
             <SajuForm onSubmit={handleDirect} loading={directLoading} />
+            {directError && (
+              <div className="mt-4 rounded-lg bg-[#fdf0ef] px-4 py-3 text-[13px] text-[#9e2a2b]">{directError}</div>
+            )}
           </div>
         )}
       </div>
@@ -528,9 +538,13 @@ export default function Home() {
   const [view, setView] = useState<"hero" | "list" | "detail">("hero");
   const [selectedGroupId, setSelectedGroupId] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
+  const [loadError, setLoadError] = useState(false);
 
   useEffect(() => {
-    fetch("/api/groups").then((r) => r.json()).then((d) => setGroups(d.groups || [])).catch(() => {});
+    fetch("/api/groups")
+      .then((r) => r.json())
+      .then((d) => setGroups(d.groups || []))
+      .catch(() => setLoadError(true));
   }, []);
 
   const selectedGroup = groups.find((g) => g.id === selectedGroupId);
@@ -554,11 +568,23 @@ export default function Home() {
 
   if (view === "hero") return <Hero onGo={goToList} stats={stats} />;
 
-  if (loading) return (
+  if (loading || loadError) return (
     <div className="flex min-h-screen items-center justify-center">
       <div className="text-center">
-        <div className="mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-2 border-[var(--border)] border-t-[var(--accent)]" />
-        <p className="text-[13px] text-[var(--ink-muted)]">불러오는 중...</p>
+        {loadError ? (
+          <>
+            <p className="text-[14px] font-medium text-[var(--ink)]">데이터를 불러올 수 없습니다</p>
+            <button onClick={() => { setLoadError(false); setLoading(true); fetch("/api/groups").then((r) => r.json()).then((d) => { setGroups(d.groups || []); setLoading(false); }).catch(() => { setLoadError(true); setLoading(false); }); }}
+              className="mt-3 rounded-lg border border-[var(--border)] px-4 py-2 text-[13px] text-[var(--ink-light)] transition hover:text-[var(--ink)]">
+              다시 시도
+            </button>
+          </>
+        ) : (
+          <>
+            <div className="mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-2 border-[var(--border)] border-t-[var(--accent)]" />
+            <p className="text-[13px] text-[var(--ink-muted)]">불러오는 중...</p>
+          </>
+        )}
       </div>
     </div>
   );

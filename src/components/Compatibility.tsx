@@ -6,8 +6,8 @@ import { analyzeCompatibility } from "@/lib/interpret";
 
 export default function Compatibility({ members }: { members: FamilyMember[] }) {
   const validMembers = members.filter((m) => m.result);
-  const [aId, setAId] = useState(validMembers[0]?.id || "");
-  const [bId, setBId] = useState(validMembers[1]?.id || "");
+  const [aId, setAId] = useState(validMembers[0]?.id ?? "");
+  const [bId, setBId] = useState(validMembers[1]?.id ?? validMembers[0]?.id ?? "");
 
   const a = validMembers.find((m) => m.id === aId);
   const b = validMembers.find((m) => m.id === bId);
@@ -48,7 +48,7 @@ export default function Compatibility({ members }: { members: FamilyMember[] }) 
 
       {/* Result */}
       {result && a && b && (
-        <div className="anim-fade space-y-4" style={{ opacity: 0 }}>
+        <div className="anim-fade space-y-4">
           {/* Header */}
           <div className="card p-5 text-center" style={{ border: "1px solid var(--accent-soft)", background: "linear-gradient(135deg, var(--accent-bg), var(--bg-card))" }}>
             <div className="mb-4 flex items-center justify-center gap-4">

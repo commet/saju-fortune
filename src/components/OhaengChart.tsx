@@ -20,7 +20,7 @@ export default function OhaengChart({ counts }: { counts: Record<Ohaeng, number>
               {/* Stacked dots */}
               <div className="flex flex-col-reverse items-center gap-1">
                 {Array.from({ length: Math.max(c, 0) }).map((_, i) => (
-                  <div key={i} className={`h-4 w-4 rounded-full ${s.dot} opacity-${70 + i * 10} transition-all`}
+                  <div key={i} className={`h-4 w-4 rounded-full ${s.dot} transition-all`}
                     style={{ opacity: 0.5 + (i / Math.max(c, 1)) * 0.5 }} />
                 ))}
                 {c === 0 && (
