@@ -30,7 +30,7 @@ export default function SectionNav() {
   }, []);
 
   return (
-    <nav className="no-scrollbar sticky top-[52px] z-20 -mx-4 flex gap-0.5 overflow-x-auto border-b border-[var(--border-light)] bg-[var(--bg-main)]/90 px-4 backdrop-blur-md sm:justify-center">
+    <nav className="no-scrollbar sticky top-[52px] z-20 -mx-5 flex gap-0.5 overflow-x-auto border-b border-[var(--border-light)] bg-[var(--bg-main)]/90 px-5 backdrop-blur-md sm:-mx-6 sm:justify-center sm:px-6">
       {SECTIONS.map(({ id, label }) => (
         <a
           key={id}

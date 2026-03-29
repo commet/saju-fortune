@@ -66,7 +66,7 @@ function Hero({ onGo, stats }: { onGo: () => void; stats: { families: number; pe
       </div>
 
       {/* Main hero area */}
-      <div className="relative flex min-h-[70vh] flex-col items-center justify-center px-4 pt-12 text-center">
+      <div className="relative flex min-h-[70vh] flex-col items-center justify-center px-6 pt-12 text-center">
         <div className="anim-fade-slow mb-6 flex items-center gap-4">
           <span className="h-px w-12 bg-gradient-to-r from-transparent to-[var(--accent-soft)]" />
           <span className="hanja text-sm tracking-[0.4em] text-[var(--accent-soft)]">四柱八字</span>
@@ -157,7 +157,7 @@ function Hero({ onGo, stats }: { onGo: () => void; stats: { families: number; pe
       </div>
 
       {/* Saju Guide — 바로 이어짐 */}
-      <div id="saju-guide" className="relative mx-auto max-w-2xl px-4 pb-12 pt-4">
+      <div id="saju-guide" className="relative mx-auto max-w-2xl px-5 pb-12 pt-4 sm:px-6">
         <SajuGuide />
         {authed && (
           <div className="mt-6 text-center">
@@ -361,13 +361,14 @@ function GroupList({ groups, onSelect, onBack }: { groups: GroupData[]; onSelect
   return (
     <div className="min-h-screen">
       <header className="sticky top-0 z-30 border-b border-[var(--border-light)] bg-[var(--bg-main)]/85 backdrop-blur-lg">
-        <div className="mx-auto flex max-w-2xl items-center justify-between px-4 py-2.5">
+        <div className="mx-auto flex max-w-2xl items-center justify-between px-5 py-2.5">
           <button onClick={onBack} className="flex items-center gap-2">
             <span className="text-[13px] text-[var(--ink-muted)]">←</span>
             <span className="font-[family-name:var(--font-noto-serif)] text-base font-bold text-[var(--ink)]">사주편지</span>
           </button>
           <span className="text-[11px] text-[var(--ink-muted)]">{groups.length}개 가족 · {allMembers.length}명</span>
         </div>
+
         {/* Sub-tabs */}
         <div className="mx-auto flex max-w-2xl border-t border-[var(--border-light)]">
           {([
@@ -388,7 +389,7 @@ function GroupList({ groups, onSelect, onBack }: { groups: GroupData[]; onSelect
         </div>
       </header>
 
-      <div className="mx-auto max-w-2xl px-4 py-5">
+      <div className="mx-auto max-w-2xl px-5 py-5 sm:px-6">
         {/* ── Families tab ── */}
         {listTab === "families" && (
           <div className="grid gap-3 sm:grid-cols-2">
@@ -461,7 +462,7 @@ function GroupDetail({ group, onBack }: { group: GroupData; onBack: () => void }
   return (
     <div className="min-h-screen">
       <header className="sticky top-0 z-30 border-b border-[var(--border-light)] bg-[var(--bg-main)]/85 backdrop-blur-lg">
-        <div className="mx-auto flex max-w-2xl items-center justify-between px-4 py-2.5">
+        <div className="mx-auto flex max-w-2xl items-center justify-between px-5 py-2.5">
           <button onClick={onBack} className="flex items-center gap-2 text-[13px] text-[var(--ink-muted)] transition hover:text-[var(--ink)]">
             <span>←</span>
             <span className="font-[family-name:var(--font-noto-serif)] text-base font-bold text-[var(--ink)]">{groupLabel(group)}</span>
@@ -480,7 +481,7 @@ function GroupDetail({ group, onBack }: { group: GroupData; onBack: () => void }
         </div>
       </header>
 
-      <main className="mx-auto max-w-2xl px-4 py-4">
+      <main className="mx-auto max-w-2xl px-5 py-4 sm:px-6">
         {tab === "reading" && (
           <>
             <div className="no-scrollbar mb-5 flex gap-1.5 overflow-x-auto pb-1">
