@@ -1,5 +1,20 @@
 import { SajuResult, Ohaeng } from "./types";
 
+/* ────────── 한국어 조사 처리 ────────── */
+function hasJongseong(str: string): boolean {
+  const last = str.charCodeAt(str.length - 1);
+  if (last < 0xAC00 || last > 0xD7A3) return false; // 한글이 아니면 받침 없음 처리
+  return (last - 0xAC00) % 28 !== 0;
+}
+/** 이/가 */
+function iga(word: string): string { return word + (hasJongseong(word) ? "이" : "가"); }
+/** 은/는 */
+function eunneun(word: string): string { return word + (hasJongseong(word) ? "은" : "는"); }
+/** 을/를 */
+function eulreul(word: string): string { return word + (hasJongseong(word) ? "을" : "를"); }
+/** 과/와 */
+function gwawa(word: string): string { return word + (hasJongseong(word) ? "과" : "와"); }
+
 /* ────────── 일간 Day Master ────────── */
 const DM: Record<string, {
   title: string; nature: string; symbol: string;
@@ -123,7 +138,7 @@ function ohaengOverview(counts: Record<Ohaeng, number>): string {
   if (strong.length > 0 && missing.length > 0) {
     const strongNames = strong.map(([k, v]) => `${OH_NAME[k]} ${v}개`).join(", ");
     const missingNames = missing.map(([k]) => OH_NAME[k]).join(", ");
-    return `${strongNames}로 강한 편이고, ${missingNames}은 사주에 없습니다. 가진 기운이 확실히 뚜렷한 구조예요.\n\n부족한 기운은 직업, 취미, 주변 사람을 통해 충분히 채울 수 있습니다.`;
+    return `${strongNames}로 강한 편이고, ${eunneun(missingNames)} 사주에 없습니다. 가진 기운이 확실히 뚜렷한 구조예요.\n\n부족한 기운은 직업, 취미, 주변 사람을 통해 충분히 채울 수 있습니다.`;
   }
   if (strong.length > 0) {
     const strongNames = strong.map(([k, v]) => `${OH_NAME[k]} ${v}개`).join(", ");
@@ -197,9 +212,9 @@ function daeunText(data: SajuResult): string {
 
   let text = `현재 ${cur.천간.한자}${cur.지지.한자}(${cur.천간.한글}${cur.지지.한글}) 대운이 ${cur.대운_시작_전통나이}세부터 흐르고 있습니다.\n\n`;
   const tone = sipsungTone[cur.천간.십성];
-  if (tone) text += `천간에 ${cur.천간.십성}이 왔는데, ${tone}\n\n`;
+  if (tone) text += `천간에 ${iga(cur.천간.십성)} 왔는데, ${tone}\n\n`;
   const tone2 = sipsungTone[cur.지지.십성];
-  if (tone2) text += `지지에는 ${cur.지지.십성}이 있어서, ${tone2}`;
+  if (tone2) text += `지지에는 ${iga(cur.지지.십성)} 있어서, ${tone2}`;
 
   if (d[1]) {
     text += `\n\n다음 대운은 ${d[1].천간.한자}${d[1].지지.한자}(${d[1].천간.한글}${d[1].지지.한글})으로, ${d[1].대운_시작_전통나이}세부터 흐름이 바뀝니다.`;
@@ -259,7 +274,7 @@ function buildOpening(data: SajuResult, dm: typeof DM[string]): string {
   if (domCount >= 4) {
     text += `딱 보자마자 "${img.scene}" 같은 느낌이 확 들어오는 사주입니다.\n${OH_NAME[domOh]} 기운이 ${domCount}개나 되니까, ${img.vibe} 에너지가 사주 전체를 지배하고 있어요.\n\n`;
   } else if (domCount >= 3) {
-    text += `전체적으로 ${img.vibe} 기운이 느껴지는 사주예요.\n${OH_NAME[domOh]}이 ${domCount}개로 중심을 잡고 있습니다.\n\n`;
+    text += `전체적으로 ${img.vibe} 기운이 느껴지는 사주예요.\n${iga(OH_NAME[domOh])} ${domCount}개로 중심을 잡고 있습니다.\n\n`;
   } else {
     text += `오행이 비교적 고르게 퍼져 있는 사주예요.\n한쪽으로 확 치우치지 않아서, 유연하게 여러 방면에서 능력을 발휘할 수 있는 구조입니다.\n\n`;
   }
@@ -272,7 +287,7 @@ function buildOpening(data: SajuResult, dm: typeof DM[string]): string {
   if (domOh !== dmOh && domCount >= 3) {
     const dmImg = OH_IMAGE[dmOh];
     text += `재미있는 건, 본인은 ${dmImg.scene} 같은 기운인데\n사주 전체는 ${img.scene} 기운이 강하다는 거예요.\n\n`;
-    text += `쉽게 비유하면?\n👉 "${OH_IMAGE[dmOh].scene} 위에 ${img.scene}이 놓인 구조"\n\n`;
+    text += `쉽게 비유하면?\n👉 "${OH_IMAGE[dmOh].scene} 위에 ${iga(img.scene)} 놓인 구조"\n\n`;
   }
 
   return text;
@@ -439,7 +454,7 @@ export function analyzeCompatibility(a: SajuResult, b: SajuResult, nameA: string
     content:
       `${nameA}은(는) ${dmA.title}.\n👉 ${dmA.intro}\n\n` +
       `${nameB}은(는) ${dmB.title}.\n👉 ${dmB.intro}\n\n` +
-      `쉽게 말하면, ${dmA.symbol}과 ${dmB.symbol}의 만남이에요.`
+      `쉽게 말하면, ${gwawa(dmA.symbol)} ${dmB.symbol}의 만남이에요.`
   });
 
   // 2. 천간합
@@ -463,7 +478,7 @@ export function analyzeCompatibility(a: SajuResult, b: SajuResult, nameA: string
       label: "일간으로 본 관계",
       content:
         `천간합(자연스러운 끌림)은 아니지만, 그렇다고 나쁜 게 아니에요.\n\n` +
-        `${dmA.symbol}과 ${dmB.symbol}은 각자 고유한 에너지가 있어서,\n` +
+        `${gwawa(dmA.symbol)} ${eunneun(dmB.symbol)} 각자 고유한 에너지가 있어서,\n` +
         `서로에게 없는 것을 배울 수 있는 관계입니다.\n\n` +
         `👉 핵심은 "다름을 인정하는 것"이에요. 다르다 = 나쁘다가 아니거든요.`
     });
@@ -479,7 +494,7 @@ export function analyzeCompatibility(a: SajuResult, b: SajuResult, nameA: string
     details.push({
       label: `${ohEmoji[aOh]}${ohEmoji[bOh]} 상생 — 함께 있으면 살아나는 관계`,
       content:
-        `${nameA}의 ${OH_NAME[aOh]}과 ${nameB}의 ${OH_NAME[bOh]}은 상생 관계예요.\n\n` +
+        `${nameA}의 ${gwawa(OH_NAME[aOh])} ${nameB}의 ${eunneun(OH_NAME[bOh])} 상생 관계예요.\n\n` +
         `상생이 뭐냐면, 한쪽이 다른 쪽에게 에너지를 주는 거예요.\n` +
         `나무가 불을 살리고, 불이 흙을 살리고... 이런 자연의 순환처럼요.\n\n` +
         `👉 함께 있으면 서로의 기운이 올라가고, 자연스럽게 좋은 영향을 주고받아요.\n\n` +
@@ -493,7 +508,7 @@ export function analyzeCompatibility(a: SajuResult, b: SajuResult, nameA: string
     details.push({
       label: `${ohEmoji[aOh]}${ohEmoji[bOh]} 상극 — 다르기에 자극이 되는 관계`,
       content:
-        `${nameA}의 ${OH_NAME[aOh]}과 ${nameB}의 ${OH_NAME[bOh]}은 상극 관계예요.\n\n` +
+        `${nameA}의 ${gwawa(OH_NAME[aOh])} ${nameB}의 ${eunneun(OH_NAME[bOh])} 상극 관계예요.\n\n` +
         `"상극"이라고 하면 좀 무섭게 들리죠? 근데 나쁜 게 아닙니다.\n\n` +
         `쉽게 말하면 "서로 다른 타입"이라는 거예요.\n` +
         `같은 방식으로 생각하지 않아서 부딪힐 수도 있지만,\n` +
@@ -521,7 +536,7 @@ export function analyzeCompatibility(a: SajuResult, b: SajuResult, nameA: string
     details.push({
       label: `${ohEmoji[aOh]}${ohEmoji[bOh]} 각자의 영역을 가진 관계`,
       content:
-        `${nameA}의 ${OH_NAME[aOh]}과 ${nameB}의 ${OH_NAME[bOh]}은 직접적인 상생/상극은 아니에요.\n\n` +
+        `${nameA}의 ${gwawa(OH_NAME[aOh])} ${nameB}의 ${eunneun(OH_NAME[bOh])} 직접적인 상생/상극은 아니에요.\n\n` +
         `이건 "각자 자기 세계가 있는 관계"라는 뜻이에요.\n` +
         `서로 간섭이 적고, 독립적으로 잘 지낼 수 있는 구조입니다.\n\n` +
         `👉 함께하면서도 각자의 공간을 존중해주는 게 이 관계의 핵심이에요.`
@@ -569,7 +584,7 @@ export function analyzeCompatibility(a: SajuResult, b: SajuResult, nameA: string
 
   // Summary
   const summary =
-    `${dmA.symbol}과 ${dmB.symbol}의 만남이에요.\n\n` +
+    `${gwawa(dmA.symbol)} ${dmB.symbol}의 만남이에요.\n\n` +
     (score >= 75
       ? `서로의 기운이 잘 어울리는 조합입니다. 함께 있을 때 각자의 장점이 더 빛나고, 서로에게 좋은 영향을 주는 관계예요.\n\n👉 한마디로: "같이 있으면 더 좋아지는 사이"`
       : score >= 60

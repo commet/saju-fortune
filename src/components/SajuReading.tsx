@@ -142,13 +142,8 @@ export default function SajuReading({ data, name, hideTime }: { data: SajuResult
         </section>
       )}
 
-      {/* 사주 명식 */}
-      <Section id="chart" title="사주 명식" subtitle="태어난 연·월·일·시의 천간과 지지" delay={0.25}>
-        <SajuChart data={data} hideTime={hideTime} />
-      </Section>
-
       {/* 인생 흐름 */}
-      <section className="anim-fade card-warm p-5 sm:p-7" style={{ animationDelay: "0.3s" }}>
+      <section className="anim-fade card-warm p-5 sm:p-7" style={{ animationDelay: "0.25s" }}>
         <h3 className="mb-1 font-[family-name:var(--font-noto-serif)] text-base font-bold text-[var(--ink)] sm:text-[17px]">
           인생의 흐름
         </h3>
@@ -158,7 +153,7 @@ export default function SajuReading({ data, name, hideTime }: { data: SajuResult
       </section>
 
       {/* 대운·세운 */}
-      <Section id="daeun" title="운의 흐름" subtitle="대운(10년)과 세운(매년)의 전환" delay={0.35}>
+      <Section id="daeun" title="운의 흐름" subtitle="대운(10년)과 세운(매년)의 전환" delay={0.3}>
         <DaeunTimeline data={data} />
         {reading.daeunReading && (
           <div className="mt-5 rounded-xl bg-white/60 p-4">
@@ -172,6 +167,11 @@ export default function SajuReading({ data, name, hideTime }: { data: SajuResult
             <p className="whitespace-pre-line text-[13px] leading-[1.9] text-[var(--ink-light)]">{reading.seunReading}</p>
           </div>
         )}
+      </Section>
+
+      {/* 사주 명식 */}
+      <Section id="chart" title="사주 명식" subtitle="태어난 연·월·일·시의 천간과 지지" delay={0.35}>
+        <SajuChart data={data} hideTime={hideTime} />
       </Section>
 
       {/* 십성 */}

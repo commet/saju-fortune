@@ -5,9 +5,9 @@ import { useState, useEffect } from "react";
 const SECTIONS = [
   { id: "ohaeng", label: "오행" },
   { id: "summary", label: "풀이" },
+  { id: "daeun", label: "운세" },
   { id: "chart", label: "명식" },
   { id: "sipsung", label: "십성" },
-  { id: "daeun", label: "운세" },
 ];
 
 export default function SectionNav() {
