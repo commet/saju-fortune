@@ -92,7 +92,7 @@ function Hero({ onGo, stats }: { onGo: () => void; stats: { families: number; pe
               <div className={`flex h-11 w-11 items-center justify-center rounded-xl border ${el.bg} ${el.b}`}>
                 <span className={`hanja text-lg ${el.c}`}>{el.h}</span>
               </div>
-              <span className={`text-[9px] ${el.c}`}>{el.label}</span>
+              <span className={`text-[10px] ${el.c}`}>{el.label}</span>
             </div>
           ))}
         </div>
@@ -228,26 +228,12 @@ function SajuGuide() {
 }
 
 /* ────────────────────────────────────────────
-   SEARCH TAB (검색 + 직접 입력)
+   DIRECT SAJU TAB (직접 사주 풀기)
    ──────────────────────────────────────────── */
-function SearchTab({ allMembers, onSelectGroup }: {
-  allMembers: (MemberData & { groupId: number; groupLabel: string })[];
-  onSelectGroup: (id: number) => void;
-}) {
-  const [query, setQuery] = useState("");
-  const [showDirect, setShowDirect] = useState(false);
+function DirectSajuTab() {
   const [directLoading, setDirectLoading] = useState(false);
   const [directResult, setDirectResult] = useState<SajuResult | null>(null);
   const [directName, setDirectName] = useState("");
-
-  const searchResults = useMemo(() => {
-    if (!query.trim()) return [];
-    const q = query.trim().toLowerCase();
-    return allMembers.filter((m) =>
-      m.name.toLowerCase().includes(q) || m.role.includes(q) || m.groupLabel.toLowerCase().includes(q)
-    );
-  }, [query, allMembers]);
-
   const [directError, setDirectError] = useState<string | null>(null);
 
   const handleDirect = useCallback(async (form: {
@@ -282,7 +268,7 @@ function SearchTab({ allMembers, onSelectGroup }: {
       <div>
         <button onClick={() => setDirectResult(null)}
           className="mb-4 flex items-center gap-1 text-[13px] text-[var(--ink-muted)] transition hover:text-[var(--ink)]">
-          ← 검색으로 돌아가기
+          ← 다시 입력하기
         </button>
         <SajuReading data={directResult} name={directName} />
       </div>
@@ -291,67 +277,16 @@ function SearchTab({ allMembers, onSelectGroup }: {
 
   return (
     <div>
-      {/* Search existing */}
       <div className="mb-4">
-        <input type="text" value={query} onChange={(e) => setQuery(e.target.value)}
-          placeholder="이름, 역할, 가족 이름으로 검색..."
-          className="w-full rounded-lg border border-[var(--border)] bg-white px-4 py-3 text-[14px] text-[var(--ink)] placeholder-[var(--ink-muted)] outline-none transition focus:border-[var(--accent-soft)] focus:shadow-[0_0_0_3px_rgba(196,162,78,0.1)]"
-        />
+        <h3 className="text-[14px] font-bold text-[var(--ink)]">직접 사주 풀어보기</h3>
+        <p className="mt-0.5 text-[11px] text-[var(--ink-muted)]">생년월일시를 입력하면 바로 사주를 확인할 수 있습니다</p>
       </div>
-
-      {query.trim() !== "" && searchResults.length > 0 && (
-        <div className="mb-6 space-y-2">
-          {searchResults.map((m) => (
-            <button key={`${m.groupId}-${m.name}`} onClick={() => onSelectGroup(m.groupId)}
-              className="card flex w-full items-center gap-3 p-4 text-left transition-all hover:shadow-md active:scale-[0.98]">
-              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[var(--accent-bg)] text-[12px] font-bold text-[var(--accent)]">
-                {m.name.charAt(0)}
-              </span>
-              <div className="min-w-0 flex-1">
-                <div className="text-[14px] font-bold text-[var(--ink)]">{m.name}</div>
-                <div className="text-[11px] text-[var(--ink-muted)]">{m.role} · {m.groupLabel}</div>
-              </div>
-              <span className="text-[11px] text-[var(--ink-muted)]">{m.birthDate}</span>
-            </button>
-          ))}
-          <p className="pt-1 text-center text-[11px] text-[var(--ink-muted)]">{searchResults.length}명 검색됨</p>
-        </div>
-      )}
-
-      {query.trim() !== "" && searchResults.length === 0 && (
-        <div className="mb-6 py-8 text-center text-[13px] text-[var(--ink-muted)]">
-          &ldquo;{query}&rdquo;에 해당하는 결과가 없습니다
-        </div>
-      )}
-
-      {/* Direct input */}
-      <div className="deco-line my-6" />
-      <div>
-        <button onClick={() => setShowDirect(!showDirect)}
-          className="flex w-full items-center justify-between rounded-xl border border-[var(--border)] bg-white p-4 transition-all hover:border-[var(--accent-soft)]">
-          <div>
-            <div className="text-[14px] font-bold text-[var(--ink)]">직접 사주 풀어보기</div>
-            <div className="mt-0.5 text-[11px] text-[var(--ink-muted)]">생년월일시를 입력하면 바로 사주를 확인할 수 있습니다</div>
-          </div>
-          <svg className={`h-5 w-5 shrink-0 text-[var(--ink-muted)] transition-transform ${showDirect ? "rotate-180" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-          </svg>
-        </button>
-        {showDirect && (
-          <div className="mt-3 card p-5">
-            <SajuForm onSubmit={handleDirect} loading={directLoading} />
-            {directError && (
-              <div className="mt-4 rounded-lg bg-[#fdf0ef] px-4 py-3 text-[13px] text-[#9e2a2b]">{directError}</div>
-            )}
-          </div>
+      <div className="card p-5">
+        <SajuForm onSubmit={handleDirect} loading={directLoading} hideStorageNote />
+        {directError && (
+          <div className="mt-4 rounded-lg bg-[#fdf0ef] px-4 py-3 text-[13px] text-[#9e2a2b]">{directError}</div>
         )}
       </div>
-
-      {query.trim() === "" && !showDirect && (
-        <div className="py-8 text-center text-[13px] text-[var(--ink-muted)]">
-          이름을 검색하거나, 아래에서 직접 사주를 풀어볼 수 있습니다
-        </div>
-      )}
     </div>
   );
 }
@@ -392,11 +327,11 @@ function GroupList({ groups, onSelect, onBack }: { groups: GroupData[]; onSelect
         <div className="mx-auto flex max-w-2xl border-t border-[var(--border-light)]">
           {([
             { key: "families" as const, label: "가족 목록" },
-            { key: "search" as const, label: "검색" },
+            { key: "search" as const, label: "사주 풀기" },
             { key: "guide" as const, label: "사주란?" },
           ]).map((t) => (
             <button key={t.key} onClick={() => setListTab(t.key)}
-              className={`relative flex-1 py-2.5 text-center text-[12px] font-medium transition-colors ${
+              className={`relative flex-1 py-3 text-center text-[13px] font-medium transition-colors ${
                 listTab === t.key ? "text-[var(--ink)]" : "text-[var(--ink-muted)] hover:text-[var(--ink-light)]"
               }`}>
               {t.label}
@@ -411,9 +346,18 @@ function GroupList({ groups, onSelect, onBack }: { groups: GroupData[]; onSelect
       <div className="mx-auto max-w-2xl px-5 py-5 sm:px-6">
         {/* ── Families tab ── */}
         {listTab === "families" && (
+          <div>
+            <div className="mb-4">
+              <input type="text" value={familyQuery} onChange={(e) => setFamilyQuery(e.target.value)}
+                placeholder="이름 · 역할로 검색"
+                className="w-full rounded-lg border border-[var(--border)] bg-white px-3.5 py-2.5 text-[13px] text-[var(--ink)] placeholder-[var(--ink-muted)] outline-none transition focus:border-[var(--accent-soft)] focus:shadow-[0_0_0_3px_rgba(196,162,78,0.1)]"
+              />
+              {familyQuery.trim() && (
+                <p className="mt-1.5 text-[11px] text-[var(--ink-muted)]">{filteredGroups.length}개 가족 검색됨</p>
+              )}
+            </div>
           <div className="grid gap-3 sm:grid-cols-2">
-            {groups.map((g) => {
-              const couple = coupleRoles(g.members);
+            {filteredGroups.map((g) => {
               return (
                 <button key={g.id} onClick={() => onSelect(g.id)}
                   className="card group relative p-5 text-left transition-all hover:shadow-md active:scale-[0.98]">
@@ -433,7 +377,7 @@ function GroupList({ groups, onSelect, onBack }: { groups: GroupData[]; onSelect
                   </div>
                   {g.members.filter((m) => m.saju).length >= 2 && (
                     <div className="absolute right-3 top-3 flex items-center gap-1 rounded-full bg-gradient-to-r from-[var(--accent)] to-[#a67c28] px-2.5 py-1 shadow-sm">
-                      <span className="hanja text-[9px] text-white/80">合</span>
+                      <span className="hanja text-[10px] text-white/80">合</span>
                       <span className="text-[10px] font-bold text-white">궁합</span>
                     </div>
                   )}
@@ -441,11 +385,12 @@ function GroupList({ groups, onSelect, onBack }: { groups: GroupData[]; onSelect
               );
             })}
           </div>
+          </div>
         )}
 
-        {/* ── Search tab ── */}
+        {/* ── Direct Saju tab ── */}
         {listTab === "search" && (
-          <SearchTab allMembers={allMembers} onSelectGroup={onSelect} />
+          <DirectSajuTab />
         )}
 
         {/* ── Guide tab ── */}
@@ -468,7 +413,6 @@ function GroupDetail({ group, onBack }: { group: GroupData; onBack: () => void }
   const [selectedIdx, setSelectedIdx] = useState(0);
   const [tab, setTab] = useState<"reading" | "compat">("reading");
   const selected = sorted[selectedIdx];
-  const couple = coupleRoles(group.members);
 
   const familyMembers = sorted.filter((m) => m.saju).map((m) => ({
     id: m.name, name: m.name,
@@ -503,23 +447,23 @@ function GroupDetail({ group, onBack }: { group: GroupData; onBack: () => void }
       <main className="mx-auto max-w-2xl px-5 py-4 sm:px-6">
         {tab === "reading" && (
           <>
-            <div className="no-scrollbar mb-5 flex gap-1.5 overflow-x-auto pb-1">
+            <div className="no-scrollbar mb-5 flex gap-2 overflow-x-auto pb-1">
               {sorted.map((m, i) => {
                 const active = i === selectedIdx;
                 return (
                   <button key={m.name} onClick={() => setSelectedIdx(i)}
-                    className={`relative flex shrink-0 items-center gap-2 rounded-lg border px-3.5 py-2 text-[13px] font-medium transition-all ${
+                    className={`relative flex shrink-0 items-center gap-2 rounded-lg border px-3.5 py-2.5 text-[13px] font-medium transition-all ${
                       active
                         ? "border-[var(--accent-soft)] bg-[var(--accent-bg)] text-[var(--accent)]"
                         : "border-[var(--border-light)] bg-white text-[var(--ink-muted)] hover:border-[var(--border)] hover:text-[var(--ink-light)]"
                     }`}>
-                    <span className={`flex h-6 w-6 items-center justify-center rounded-md text-[10px] font-bold ${
+                    <span className={`flex h-7 w-7 items-center justify-center rounded-md text-[11px] font-bold ${
                       active ? "bg-[var(--ink)] text-[#f5f0e8]" : "bg-[var(--bg-main)] text-[var(--ink-muted)]"
                     }`}>{m.name.charAt(0)}</span>
                     <span>{m.name}</span>
                     <span className="text-[10px] text-[var(--ink-muted)]">{m.role}</span>
                     {!m.birthTime && !m.birthTimeRange && (
-                      <span className="rounded bg-[var(--bg-main)] px-1 py-0.5 text-[8px] text-[var(--ink-muted)]">3주</span>
+                      <span className="rounded bg-[var(--bg-main)] px-1.5 py-0.5 text-[10px] text-[var(--ink-muted)]">3주</span>
                     )}
                   </button>
                 );

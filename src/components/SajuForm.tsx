@@ -30,9 +30,11 @@ const SIGIN = [
 export default function SajuForm({
   onSubmit,
   loading,
+  hideStorageNote,
 }: {
   onSubmit: (data: FormData) => void;
   loading: boolean;
+  hideStorageNote?: boolean;
 }) {
   const [form, setForm] = useState<FormData>({
     name: "",
@@ -163,9 +165,11 @@ export default function SajuForm({
         )}
       </button>
 
-      <p className="text-center text-[11px] text-[var(--ink-muted)]">
-        입력 정보는 이 기기에만 저장됩니다
-      </p>
+      {!hideStorageNote && (
+        <p className="text-center text-[11px] text-[var(--ink-muted)]">
+          입력 정보는 이 기기에만 저장됩니다
+        </p>
+      )}
     </form>
   );
 }

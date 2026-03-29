@@ -452,8 +452,8 @@ export function analyzeCompatibility(a: SajuResult, b: SajuResult, nameA: string
   details.push({
     label: "두 사람은 어떤 사람인가요?",
     content:
-      `${nameA}은(는) ${dmA.title}.\n👉 ${dmA.intro}\n\n` +
-      `${nameB}은(는) ${dmB.title}.\n👉 ${dmB.intro}\n\n` +
+      `${eunneun(nameA)} ${dmA.title}.\n👉 ${dmA.intro}\n\n` +
+      `${eunneun(nameB)} ${dmB.title}.\n👉 ${dmB.intro}\n\n` +
       `쉽게 말하면, ${gwawa(dmA.symbol)} ${dmB.symbol}의 만남이에요.`
   });
 
@@ -555,12 +555,12 @@ export function analyzeCompatibility(a: SajuResult, b: SajuResult, nameA: string
   if (bFillsA.length > 0 || aFillsB.length > 0) {
     let content = "이건 꽤 좋은 신호예요!\n\n";
     if (bFillsA.length > 0) {
-      content += `${nameA}에게 없는 ${bFillsA.map((k) => OH_NAME[k]).join(", ")} 기운을 ${nameB}이(가) 가지고 있어요.\n`;
-      content += `👉 ${nameB}이(가) ${nameA}의 빈자리를 채워주는 구조입니다.\n\n`;
+      content += `${nameA}에게 없는 ${bFillsA.map((k) => OH_NAME[k]).join(", ")} 기운을 ${iga(nameB)} 가지고 있어요.\n`;
+      content += `👉 ${iga(nameB)} ${nameA}의 빈자리를 채워주는 구조입니다.\n\n`;
     }
     if (aFillsB.length > 0) {
-      content += `반대로, ${nameB}에게 없는 ${aFillsB.map((k) => OH_NAME[k]).join(", ")} 기운을 ${nameA}이(가) 가지고 있어요.\n`;
-      content += `👉 ${nameA}이(가) ${nameB}의 빈자리를 채워주는 구조예요.\n\n`;
+      content += `반대로, ${nameB}에게 없는 ${aFillsB.map((k) => OH_NAME[k]).join(", ")} 기운을 ${iga(nameA)} 가지고 있어요.\n`;
+      content += `👉 ${iga(nameA)} ${nameB}의 빈자리를 채워주는 구조예요.\n\n`;
     }
     content += "서로에게 없는 걸 가진 사람이 옆에 있다는 건,\n혼자서는 불완전한 것을 둘이 함께하면 완성할 수 있다는 뜻이에요.";
     details.push({ label: "🧩 서로의 빈자리를 채워주는 관계", content });
