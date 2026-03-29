@@ -760,8 +760,8 @@
           "birthTime": null,
           "birthTimeNote": "3시 30분~5시",
           "birthTimeRange": ["15:30", "17:00"],
-          "gender": "F",
-          "role": "딸"
+          "gender": "M",
+          "role": "아들"
         }
       ]
     },

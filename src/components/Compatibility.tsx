@@ -84,7 +84,7 @@ export default function Compatibility({ members }: { members: FamilyMember[] }) 
           {result.details.map((d, i) => (
             <div key={i} className="card-warm p-5">
               <h4 className="mb-2 text-[13px] font-bold text-[var(--ink)]">{d.label}</h4>
-              <p className="text-[13px] leading-[1.9] text-[var(--ink-light)]">{d.content}</p>
+              <p className="whitespace-pre-line text-[13px] leading-[1.9] text-[var(--ink-light)]">{d.content}</p>
             </div>
           ))}
 

@@ -361,11 +361,21 @@ function SearchTab({ allMembers, onSelectGroup }: {
    ──────────────────────────────────────────── */
 function GroupList({ groups, onSelect, onBack }: { groups: GroupData[]; onSelect: (id: number) => void; onBack: () => void }) {
   const [listTab, setListTab] = useState<"families" | "search" | "guide">("families");
+  const [familyQuery, setFamilyQuery] = useState("");
 
   const allMembers = useMemo(() =>
     groups.flatMap((g) => g.members.map((m) => ({ ...m, groupId: g.id, groupLabel: groupLabel(g) }))),
     [groups]
   );
+
+  const filteredGroups = useMemo(() => {
+    if (!familyQuery.trim()) return groups;
+    const q = familyQuery.trim().toLowerCase();
+    return groups.filter((g) =>
+      g.members.some((m) => m.name.toLowerCase().includes(q) || m.role.includes(q)) ||
+      groupLabel(g).toLowerCase().includes(q)
+    );
+  }, [familyQuery, groups]);
 
   return (
     <div className="min-h-screen">

@@ -1068,11 +1068,11 @@
             "15:30",
             "17:00"
           ],
-          "gender": "F",
-          "role": "딸",
+          "gender": "M",
+          "role": "아들",
           "apiTime": "16",
           "apiBirthdayType": "SOLAR",
-          "cacheKey": "20130102_16_SOLAR_FEMALE",
+          "cacheKey": "20130102_16_SOLAR_MALE",
           "hasSaju": true
         }
       ]
