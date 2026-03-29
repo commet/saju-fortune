@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { SajuResult } from "@/lib/types";
 import SajuReading from "@/components/SajuReading";
 import Compatibility from "@/components/Compatibility";
+import SajuForm from "@/components/SajuForm";
 
 interface MemberData {
   name: string; birthDate: string; calendar: string;
@@ -124,24 +125,29 @@ function Hero({ onGo, stats }: { onGo: () => void; stats: { families: number; pe
             가족 사주 보기
           </button>
         ) : (
-          <div className="anim-fade anim-d5 mt-8 flex flex-col items-center gap-2">
-            <div className="flex items-center gap-2">
-              <input
-                type="password"
-                value={pw}
-                onChange={(e) => { setPw(e.target.value); setPwError(false); }}
-                onKeyDown={(e) => e.key === "Enter" && handleEnter()}
-                placeholder="비밀번호"
-                className={`w-36 rounded-lg border bg-white px-4 py-3 text-center text-[14px] text-[var(--ink)] outline-none transition ${
-                  pwError ? "border-[#9e2a2b] shake" : "border-[var(--border)] focus:border-[var(--accent-soft)]"
-                }`}
-              />
-              <button onClick={handleEnter}
-                className="rounded-lg bg-[var(--ink)] px-5 py-3 text-[14px] font-semibold text-[#f5f0e8] transition-all hover:bg-[#1a1714] active:scale-95">
-                입장
-              </button>
+          <div className="anim-fade anim-d5 mt-8 w-full max-w-xs">
+            <div className="card relative overflow-hidden p-6 text-center">
+              <div className="pointer-events-none absolute -right-6 -top-6 h-16 w-16 rounded-full bg-[var(--accent-soft)] opacity-[0.08]" />
+              <p className="mb-4 text-[13px] font-medium text-[var(--ink-light)]">비밀번호를 입력해주세요</p>
+              <div className="flex items-center gap-2">
+                <input
+                  type="password"
+                  value={pw}
+                  onChange={(e) => { setPw(e.target.value); setPwError(false); }}
+                  onKeyDown={(e) => e.key === "Enter" && handleEnter()}
+                  placeholder="••••"
+                  autoFocus
+                  className={`flex-1 rounded-lg border bg-white px-4 py-3.5 text-center text-[15px] font-medium text-[var(--ink)] outline-none transition ${
+                    pwError ? "border-[#9e2a2b] shadow-[0_0_0_3px_rgba(158,42,43,0.1)]" : "border-[var(--border)] focus:border-[var(--accent-soft)] focus:shadow-[0_0_0_3px_rgba(196,162,78,0.12)]"
+                  }`}
+                />
+                <button onClick={handleEnter}
+                  className="shrink-0 rounded-lg bg-[var(--ink)] px-6 py-3.5 text-[14px] font-bold text-[#f5f0e8] shadow-md transition-all hover:bg-[#1a1714] hover:shadow-lg active:scale-95">
+                  입장 →
+                </button>
+              </div>
+              {pwError && <p className="mt-3 text-[12px] font-medium text-[#9e2a2b]">비밀번호가 맞지 않습니다</p>}
             </div>
-            {pwError && <p className="text-[11px] text-[#9e2a2b]">비밀번호가 맞지 않습니다</p>}
           </div>
         )}
 
@@ -226,16 +232,17 @@ function SajuGuide() {
 }
 
 /* ────────────────────────────────────────────
-   GROUP LIST
+   SEARCH TAB (검색 + 직접 입력)
    ──────────────────────────────────────────── */
-function GroupList({ groups, onSelect, onBack }: { groups: GroupData[]; onSelect: (id: number) => void; onBack: () => void }) {
-  const [listTab, setListTab] = useState<"families" | "search" | "guide">("families");
+function SearchTab({ allMembers, onSelectGroup }: {
+  allMembers: (MemberData & { groupId: number; groupLabel: string })[];
+  onSelectGroup: (id: number) => void;
+}) {
   const [query, setQuery] = useState("");
-
-  const allMembers = useMemo(() =>
-    groups.flatMap((g) => g.members.map((m) => ({ ...m, groupId: g.id, groupLabel: groupLabel(g) }))),
-    [groups]
-  );
+  const [showDirect, setShowDirect] = useState(false);
+  const [directLoading, setDirectLoading] = useState(false);
+  const [directResult, setDirectResult] = useState<SajuResult | null>(null);
+  const [directName, setDirectName] = useState("");
 
   const searchResults = useMemo(() => {
     if (!query.trim()) return [];
@@ -244,6 +251,115 @@ function GroupList({ groups, onSelect, onBack }: { groups: GroupData[]; onSelect
       m.name.toLowerCase().includes(q) || m.role.includes(q) || m.groupLabel.toLowerCase().includes(q)
     );
   }, [query, allMembers]);
+
+  const handleDirect = useCallback(async (form: {
+    name: string; year: string; month: string; day: string;
+    time: string; birthdayType: "SOLAR" | "LUNAR"; gender: "MALE" | "FEMALE";
+  }) => {
+    setDirectLoading(true);
+    const birthday = `${form.year}${form.month.padStart(2, "0")}${form.day.padStart(2, "0")}`;
+    try {
+      const res = await fetch("/api/saju", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ birthday, time: form.time, birthdayType: form.birthdayType, gender: form.gender }),
+      });
+      const json = await res.json();
+      if (res.ok && json.data) {
+        setDirectResult(json.data);
+        setDirectName(form.name);
+      }
+    } catch { /* ignore */ } finally {
+      setDirectLoading(false);
+    }
+  }, []);
+
+  if (directResult) {
+    return (
+      <div>
+        <button onClick={() => setDirectResult(null)}
+          className="mb-4 flex items-center gap-1 text-[13px] text-[var(--ink-muted)] transition hover:text-[var(--ink)]">
+          ← 검색으로 돌아가기
+        </button>
+        <SajuReading data={directResult} name={directName} />
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      {/* Search existing */}
+      <div className="mb-4">
+        <input type="text" value={query} onChange={(e) => setQuery(e.target.value)}
+          placeholder="이름, 역할, 가족 이름으로 검색..."
+          className="w-full rounded-lg border border-[var(--border)] bg-white px-4 py-3 text-[14px] text-[var(--ink)] placeholder-[var(--ink-muted)] outline-none transition focus:border-[var(--accent-soft)] focus:shadow-[0_0_0_3px_rgba(196,162,78,0.1)]"
+        />
+      </div>
+
+      {query.trim() !== "" && searchResults.length > 0 && (
+        <div className="mb-6 space-y-2">
+          {searchResults.map((m) => (
+            <button key={`${m.groupId}-${m.name}`} onClick={() => onSelectGroup(m.groupId)}
+              className="card flex w-full items-center gap-3 p-4 text-left transition-all hover:shadow-md active:scale-[0.98]">
+              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[var(--accent-bg)] text-[12px] font-bold text-[var(--accent)]">
+                {m.name.charAt(0)}
+              </span>
+              <div className="min-w-0 flex-1">
+                <div className="text-[14px] font-bold text-[var(--ink)]">{m.name}</div>
+                <div className="text-[11px] text-[var(--ink-muted)]">{m.role} · {m.groupLabel}</div>
+              </div>
+              <span className="text-[11px] text-[var(--ink-muted)]">{m.birthDate}</span>
+            </button>
+          ))}
+          <p className="pt-1 text-center text-[11px] text-[var(--ink-muted)]">{searchResults.length}명 검색됨</p>
+        </div>
+      )}
+
+      {query.trim() !== "" && searchResults.length === 0 && (
+        <div className="mb-6 py-8 text-center text-[13px] text-[var(--ink-muted)]">
+          &ldquo;{query}&rdquo;에 해당하는 결과가 없습니다
+        </div>
+      )}
+
+      {/* Direct input */}
+      <div className="deco-line my-6" />
+      <div>
+        <button onClick={() => setShowDirect(!showDirect)}
+          className="flex w-full items-center justify-between rounded-xl border border-[var(--border)] bg-white p-4 transition-all hover:border-[var(--accent-soft)]">
+          <div>
+            <div className="text-[14px] font-bold text-[var(--ink)]">직접 사주 풀어보기</div>
+            <div className="mt-0.5 text-[11px] text-[var(--ink-muted)]">생년월일시를 입력하면 바로 사주를 확인할 수 있습니다</div>
+          </div>
+          <svg className={`h-5 w-5 shrink-0 text-[var(--ink-muted)] transition-transform ${showDirect ? "rotate-180" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+        {showDirect && (
+          <div className="mt-3 card p-5">
+            <SajuForm onSubmit={handleDirect} loading={directLoading} />
+          </div>
+        )}
+      </div>
+
+      {query.trim() === "" && !showDirect && (
+        <div className="py-8 text-center text-[13px] text-[var(--ink-muted)]">
+          이름을 검색하거나, 아래에서 직접 사주를 풀어볼 수 있습니다
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ────────────────────────────────────────────
+   GROUP LIST
+   ──────────────────────────────────────────── */
+function GroupList({ groups, onSelect, onBack }: { groups: GroupData[]; onSelect: (id: number) => void; onBack: () => void }) {
+  const [listTab, setListTab] = useState<"families" | "search" | "guide">("families");
+
+  const allMembers = useMemo(() =>
+    groups.flatMap((g) => g.members.map((m) => ({ ...m, groupId: g.id, groupLabel: groupLabel(g) }))),
+    [groups]
+  );
 
   return (
     <div className="min-h-screen">
@@ -259,7 +375,7 @@ function GroupList({ groups, onSelect, onBack }: { groups: GroupData[]; onSelect
         <div className="mx-auto flex max-w-2xl border-t border-[var(--border-light)]">
           {([
             { key: "families" as const, label: "가족 목록" },
-            { key: "search" as const, label: "이름 검색" },
+            { key: "search" as const, label: "검색" },
             { key: "guide" as const, label: "사주란?" },
           ]).map((t) => (
             <button key={t.key} onClick={() => setListTab(t.key)}
@@ -312,44 +428,7 @@ function GroupList({ groups, onSelect, onBack }: { groups: GroupData[]; onSelect
 
         {/* ── Search tab ── */}
         {listTab === "search" && (
-          <div>
-            <div className="mb-4">
-              <input
-                type="text"
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                placeholder="이름, 역할, 가족 이름으로 검색..."
-                autoFocus
-                className="w-full rounded-lg border border-[var(--border)] bg-white px-4 py-3 text-[14px] text-[var(--ink)] placeholder-[var(--ink-muted)] outline-none transition focus:border-[var(--accent-soft)] focus:shadow-[0_0_0_3px_rgba(196,162,78,0.1)]"
-              />
-            </div>
-            {query.trim() === "" ? (
-              <div className="py-12 text-center text-[13px] text-[var(--ink-muted)]">
-                이름이나 역할(부, 모, 아들, 딸 등)을 입력하세요
-              </div>
-            ) : searchResults.length === 0 ? (
-              <div className="py-12 text-center text-[13px] text-[var(--ink-muted)]">
-                &ldquo;{query}&rdquo;에 해당하는 결과가 없습니다
-              </div>
-            ) : (
-              <div className="space-y-2">
-                {searchResults.map((m) => (
-                  <button key={`${m.groupId}-${m.name}`} onClick={() => onSelect(m.groupId)}
-                    className="card flex w-full items-center gap-3 p-4 text-left transition-all hover:shadow-md active:scale-[0.98]">
-                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[var(--accent-bg)] text-[12px] font-bold text-[var(--accent)]">
-                      {m.name.charAt(0)}
-                    </span>
-                    <div className="min-w-0 flex-1">
-                      <div className="text-[14px] font-bold text-[var(--ink)]">{m.name}</div>
-                      <div className="text-[11px] text-[var(--ink-muted)]">{m.role} · {m.groupLabel}</div>
-                    </div>
-                    <span className="text-[11px] text-[var(--ink-muted)]">{m.birthDate}</span>
-                  </button>
-                ))}
-                <p className="pt-2 text-center text-[11px] text-[var(--ink-muted)]">{searchResults.length}명 검색됨</p>
-              </div>
-            )}
-          </div>
+          <SearchTab allMembers={allMembers} onSelectGroup={onSelect} />
         )}
 
         {/* ── Guide tab ── */}
@@ -357,7 +436,7 @@ function GroupList({ groups, onSelect, onBack }: { groups: GroupData[]; onSelect
       </div>
 
       <footer className="mt-8 border-t border-[var(--border-light)] py-8 text-center">
-        <p className="text-[11px] text-[var(--ink-muted)]">사주팔자는 동양 철학에 기반한 참고 자료이며, 모든 선택은 본인의 의지에 달려 있습니다.</p>
+        <div className="mx-auto max-w-md rounded-xl border border-[var(--accent-soft)]/30 bg-[var(--accent-bg)]/50 px-5 py-3"><p className="text-[12px] font-medium leading-relaxed text-[var(--accent)]">사주팔자는 동양 철학에 기반한 <strong>참고 자료</strong>이며, 모든 선택과 결과는 <strong>본인의 의지</strong>에 달려 있습니다.</p></div>
         <p className="mt-2 text-[10px] text-[var(--border)]">사주편지 &copy; {new Date().getFullYear()}</p>
       </footer>
     </div>
@@ -437,7 +516,7 @@ function GroupDetail({ group, onBack }: { group: GroupData; onBack: () => void }
       </main>
 
       <footer className="mt-12 border-t border-[var(--border-light)] py-8 text-center">
-        <p className="text-[11px] text-[var(--ink-muted)]">사주팔자는 동양 철학에 기반한 참고 자료이며, 모든 선택은 본인의 의지에 달려 있습니다.</p>
+        <div className="mx-auto max-w-md rounded-xl border border-[var(--accent-soft)]/30 bg-[var(--accent-bg)]/50 px-5 py-3"><p className="text-[12px] font-medium leading-relaxed text-[var(--accent)]">사주팔자는 동양 철학에 기반한 <strong>참고 자료</strong>이며, 모든 선택과 결과는 <strong>본인의 의지</strong>에 달려 있습니다.</p></div>
       </footer>
     </div>
   );
