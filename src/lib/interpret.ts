@@ -119,35 +119,21 @@ function ohaengOverview(counts: Record<Ohaeng, number>): string {
   const missing = (Object.entries(counts) as [Ohaeng, number][]).filter(([, v]) => v === 0);
   const total = Object.values(counts).reduce((a, b) => a + b, 0);
 
-  const parts: string[] = [];
-
-  // 오행 분포 특징 분석
-  const ohDesc: Record<Ohaeng, string> = {
-    목: "성장하려는 힘, 계획을 세우고 앞으로 나아가려는 에너지",
-    화: "열정과 표현력, 시작하는 힘과 추진력",
-    토: "현실감각, 책임감, 중심을 잡아주는 힘",
-    금: "판단력, 결단력, 논리적으로 정리하는 힘",
-    수: "지혜, 유연함, 흐름을 읽는 힘",
-  };
-
+  // 최대 2문단으로 압축
+  if (strong.length > 0 && missing.length > 0) {
+    const strongNames = strong.map(([k, v]) => `${OH_NAME[k]} ${v}개`).join(", ");
+    const missingNames = missing.map(([k]) => OH_NAME[k]).join(", ");
+    return `${strongNames}로 강한 편이고, ${missingNames}은 사주에 없습니다. 가진 기운이 확실히 뚜렷한 구조예요.\n\n부족한 기운은 직업, 취미, 주변 사람을 통해 충분히 채울 수 있습니다.`;
+  }
   if (strong.length > 0) {
-    for (const [k, v] of strong) {
-      const pct = Math.round((v / total) * 100);
-      parts.push(`${OH_NAME[k]}의 기운이 ${v}개(${pct}%)로 매우 강합니다.\n이건 ${ohDesc[k]}이 두드러진다는 뜻이에요. 일상에서도 이 기운의 영향을 크게 받고, 성격에서도 뚜렷하게 나타납니다.`);
-    }
+    const strongNames = strong.map(([k, v]) => `${OH_NAME[k]} ${v}개`).join(", ");
+    return `${strongNames}로 강한 편입니다. 이 기운이 성격과 삶의 방향에 큰 영향을 미쳐요.`;
   }
-
   if (missing.length > 0) {
-    for (const [k] of missing) {
-      parts.push(`${OH_NAME[k]}의 기운이 사주에 없습니다.\n이건 ${ohDesc[k]}이 약하다는 의미예요. 하지만 걱정할 필요는 없습니다. 부족한 기운은 직업 선택, 취미 활동, 함께하는 사람을 통해 충분히 채울 수 있어요.`);
-    }
+    const missingNames = missing.map(([k]) => OH_NAME[k]).join(", ");
+    return `${missingNames}의 기운이 사주에 없습니다. 부족한 기운은 환경이나 사람을 통해 채울 수 있어요.`;
   }
-
-  if (missing.length === 0 && strong.length === 0) {
-    parts.push("오행이 비교적 고르게 퍼져 있어요. 이런 사주는 어느 한쪽으로 극단적으로 치우치지 않아서, 다방면에서 균형 있게 능력을 발휘할 수 있는 구조입니다.");
-  }
-
-  return parts.join("\n\n");
+  return "오행이 비교적 고르게 퍼져 있어서, 균형 잡힌 구조입니다.";
 }
 
 function lifeDirection(counts: Record<Ohaeng, number>, dmHangeul: string): string {
