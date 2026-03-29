@@ -249,6 +249,147 @@ function seunText(data: SajuResult): string {
   return text;
 }
 
+/* ────────── 사주 전체 이미지 생성 ────────── */
+const OH_IMAGE: Record<Ohaeng, { scene: string; vibe: string }> = {
+  목: { scene: "싱그러운 숲", vibe: "성장과 생명력이 넘치는" },
+  화: { scene: "활활 타오르는 불", vibe: "열정과 에너지가 강렬한" },
+  토: { scene: "단단한 대지", vibe: "묵직하고 안정적인" },
+  금: { scene: "날카로운 쇠", vibe: "차갑고 결단력 있는" },
+  수: { scene: "깊은 바다", vibe: "지혜롭고 유연한" },
+};
+
+function buildOpening(data: SajuResult, dm: typeof DM[string]): string {
+  const counts = data.오행_갯수;
+  const dominant = (Object.entries(counts) as [Ohaeng, number][]).sort((a, b) => b[1] - a[1])[0];
+  const domOh = dominant[0];
+  const domCount = dominant[1];
+  const missing = (Object.entries(counts) as [Ohaeng, number][]).filter(([, v]) => v === 0).map(([k]) => k);
+  const img = OH_IMAGE[domOh];
+  const dmOh = data.일간.오행 as Ohaeng;
+
+  let text = "";
+
+  // 첫 인상 — 전체 사주의 이미지
+  if (domCount >= 4) {
+    text += `딱 보자마자 "${img.scene}" 같은 느낌이 확 들어오는 사주입니다.\n${OH_NAME[domOh]} 기운이 ${domCount}개나 되니까, ${img.vibe} 에너지가 사주 전체를 지배하고 있어요.\n\n`;
+  } else if (domCount >= 3) {
+    text += `전체적으로 ${img.vibe} 기운이 느껴지는 사주예요.\n${OH_NAME[domOh]}이 ${domCount}개로 중심을 잡고 있습니다.\n\n`;
+  } else {
+    text += `오행이 비교적 고르게 퍼져 있는 사주예요.\n한쪽으로 확 치우치지 않아서, 유연하게 여러 방면에서 능력을 발휘할 수 있는 구조입니다.\n\n`;
+  }
+
+  // 일간 본질
+  text += `이분의 본질은 ${dm.title}.\n\n`;
+  text += `👉 ${dm.intro}\n\n`;
+
+  // 구조 비유
+  if (domOh !== dmOh && domCount >= 3) {
+    const dmImg = OH_IMAGE[dmOh];
+    text += `재미있는 건, 본인은 ${dmImg.scene} 같은 기운인데\n사주 전체는 ${img.scene} 기운이 강하다는 거예요.\n\n`;
+    text += `쉽게 비유하면?\n👉 "${OH_IMAGE[dmOh].scene} 위에 ${img.scene}이 놓인 구조"\n\n`;
+  }
+
+  return text;
+}
+
+function buildPersonality(data: SajuResult, dm: typeof DM[string]): string {
+  const counts = data.오행_갯수;
+  const missing = (Object.entries(counts) as [Ohaeng, number][]).filter(([, v]) => v === 0).map(([k]) => k);
+  const strong = (Object.entries(counts) as [Ohaeng, number][]).filter(([, v]) => v >= 3).map(([k]) => k);
+
+  let text = dm.personality + "\n\n";
+
+  // 오행 불균형에서 오는 성격 포인트
+  if (missing.length > 0 || strong.length > 0) {
+    text += "── 오행으로 보는 성격 포인트\n\n";
+
+    if (strong.includes("화" as Ohaeng)) {
+      text += `🔥 화(火)가 ${counts["화"]}개 — 감정과 열정이 강합니다.\n`;
+      text += `• 추진력 강함\n• 성격이 뜨거운 편\n• 시작하는 힘이 좋지만, 지속력은 관리 필요\n\n`;
+    }
+    if (strong.includes("토" as Ohaeng)) {
+      text += `🏔 토(土)가 ${counts["토"]}개 — 현실감각과 책임감이 강합니다.\n`;
+      text += `• 묵묵히 해내는 타입\n• 안정을 추구\n• 대신 변화에 느릴 수 있음\n\n`;
+    }
+    if (strong.includes("금" as Ohaeng)) {
+      text += `⚔ 금(金)이 ${counts["금"]}개 — 판단력과 결단력이 뛰어납니다.\n`;
+      text += `• 논리적이고 현실적\n• 칼같은 결정력\n• 때로 차갑게 느껴질 수 있음\n\n`;
+    }
+    if (strong.includes("수" as Ohaeng)) {
+      text += `🌊 수(水)가 ${counts["수"]}개 — 머리가 잘 돌아가고 유연합니다.\n`;
+      text += `• 상황 판단이 빠름\n• 적응력 뛰어남\n• 생각이 너무 많아질 수 있음\n\n`;
+    }
+    if (strong.includes("목" as Ohaeng)) {
+      text += `🌿 목(木)이 ${counts["목"]}개 — 성장 지향적이고 진취적입니다.\n`;
+      text += `• 앞으로 나아가려는 힘이 강함\n• 계획을 세우고 실행\n• 때로 조급할 수 있음\n\n`;
+    }
+
+    if (missing.includes("목" as Ohaeng)) {
+      text += `❌ 목(木) 없음 — 유연성이 부족할 수 있어요.\n• 타협이 어려운 편\n• 장기 계획보다 눈앞의 현실에 집중\n\n`;
+    }
+    if (missing.includes("화" as Ohaeng)) {
+      text += `❌ 화(火) 없음 — 추진력이 약할 수 있어요.\n• 시작이 신중하고 결정이 느림\n• 대신 실수는 적은 타입\n\n`;
+    }
+    if (missing.includes("토" as Ohaeng)) {
+      text += `❌ 토(土) 없음 — 안정감이 부족할 수 있어요.\n• 변화가 잦고 중심잡기가 어려움\n• 대신 자유롭고 유연한 삶의 구조\n\n`;
+    }
+    if (missing.includes("금" as Ohaeng)) {
+      text += `❌ 금(金) 없음 — 결단력이 약할 수 있어요.\n• 우유부단해지기 쉬움\n• 대신 부드럽고 포용력 있는 성격\n\n`;
+    }
+    if (missing.includes("수" as Ohaeng)) {
+      text += `❌ 수(水) 없음 — 소통력이 약할 수 있어요.\n• 감정 표현이 서투른 편\n• 대신 행동으로 보여주는 타입\n\n`;
+    }
+  }
+
+  return text;
+}
+
+function buildSummaryLine(data: SajuResult, dm: typeof DM[string]): string {
+  const counts = data.오행_갯수;
+  const dominant = (Object.entries(counts) as [Ohaeng, number][]).sort((a, b) => b[1] - a[1])[0];
+  const missing = (Object.entries(counts) as [Ohaeng, number][]).filter(([, v]) => v === 0);
+
+  const traits: string[] = [];
+  if (counts["화"] >= 3) traits.push("열정적");
+  if (counts["토"] >= 3) traits.push("책임감 강한");
+  if (counts["금"] >= 3) traits.push("결단력 있는");
+  if (counts["수"] >= 3) traits.push("지혜로운");
+  if (counts["목"] >= 3) traits.push("성장 지향적인");
+  if (traits.length === 0) traits.push("균형 잡힌");
+
+  const traitStr = traits.join(", ");
+
+  return `👉 한마디로: "${traitStr} 에너지로 살아가는 ${dm.symbol}의 사주"`;
+}
+
+function buildChecklist(data: SajuResult, dm: typeof DM[string]): string {
+  const counts = data.오행_갯수;
+  const items: string[] = [];
+
+  // 일간 기반
+  if (["갑", "경"].includes(data.일간.한글)) items.push("내가 좀 강한 편이다");
+  if (["을", "계"].includes(data.일간.한글)) items.push("겉으로는 조용한데 속은 다르다");
+  if (["병", "정"].includes(data.일간.한글)) items.push("감정이 풍부한 편이다");
+  if (["무", "기"].includes(data.일간.한글)) items.push("책임감이 강하다는 말을 듣는다");
+  if (["임"].includes(data.일간.한글)) items.push("머리 회전이 빠르다고 느낀다");
+  if (["신"].includes(data.일간.한글)) items.push("기준이 높고 까다로운 편이다");
+
+  // 오행 기반
+  if (counts["화"] >= 3) items.push("한번 화나면 쉽게 안 내려간다");
+  if (counts["토"] >= 3) items.push("변화보다 안정을 선호한다");
+  if (counts["금"] >= 3) items.push("감정보다 이성으로 판단하는 편이다");
+  if (counts["수"] >= 3) items.push("혼자 생각하는 시간이 필요하다");
+  if (counts["목"] >= 3) items.push("가만히 있으면 답답하다");
+  if (counts["목"] === 0) items.push("고집 있다는 말을 들어봤다");
+  if (counts["화"] === 0) items.push("시작하기까지 시간이 오래 걸린다");
+  if (counts["수"] === 0) items.push("감정 표현이 서투른 편이다");
+
+  if (items.length === 0) return "";
+
+  const selected = items.slice(0, 4);
+  return "── 혹시 이런 느낌 있으셨을까요?\n\n" + selected.map((i) => `• ${i}`).join("\n");
+}
+
 /* ────────── 메인 생성 ────────── */
 export interface FullReading {
   dayMaster: typeof DM[string];
@@ -273,37 +414,27 @@ export function generateFullReading(data: SajuResult): FullReading {
     { position: "시지", name: data.시지.십성, info: SIPSUNG[data.시지.십성] },
   ].filter((s) => s.info);
 
-  const strong = (Object.entries(data.오행_갯수) as [Ohaeng, number][]).filter(([, v]) => v >= 3).map(([k]) => k);
-  const missing = (Object.entries(data.오행_갯수) as [Ohaeng, number][]).filter(([, v]) => v === 0).map(([k]) => k);
+  // 종합 overview — 스토리텔링 스타일
+  const opening = buildOpening(data, dm);
+  const personality = buildPersonality(data, dm);
+  const summaryLine = buildSummaryLine(data, dm);
+  const checklist = buildChecklist(data, dm);
 
-  // 종합 overview — 대화체, 비유, 통찰
-  let overview = `일간이 ${dm.title}, ${dm.intro}\n\n`;
-  overview += dm.personality;
-  overview += "\n\n";
+  let overview = opening;
+  overview += personality;
 
-  // 오행 핵심 요약
-  overview += "── 오행으로 보면\n\n";
-  if (strong.length > 0 || missing.length > 0) {
-    if (strong.length > 0) {
-      overview += `${strong.map((k) => OH_NAME[k]).join(", ")} 기운이 특히 강하고`;
-    }
-    if (missing.length > 0) {
-      overview += `${strong.length > 0 ? ", " : ""}${missing.map((k) => OH_NAME[k]).join(", ")} 기운은 사주에 없어요`;
-    }
-    overview += ".\n\n";
+  // 강점/약점 정리
+  overview += "── 핵심 정리\n\n";
+  overview += `✔ 강점: ${dm.strengths}\n`;
+  overview += `✔ 잘 맞는 방향: ${dm.career}\n`;
+  overview += `⚠ 주의할 점: ${dm.challenges}\n`;
+  overview += `💕 관계: ${dm.relationship}\n\n`;
 
-    if (missing.length > 0 && strong.length > 0) {
-      overview += "쉽게 정리하면, 가진 기운은 확실히 강한데 빠진 기운도 뚜렷한 구조예요. 강한 것을 살리고, 부족한 것은 환경이나 사람으로 채워가는 것이 포인트입니다.";
-    }
-  } else {
-    overview += "오행이 비교적 고르게 분포되어 있어서, 한쪽으로 치우치지 않는 균형 잡힌 구조예요.";
+  overview += summaryLine;
+
+  if (checklist) {
+    overview += "\n\n" + checklist;
   }
-
-  overview += "\n\n── 핵심 정리\n\n";
-  overview += `• 강점: ${dm.strengths}\n`;
-  overview += `• 주의할 점: ${dm.challenges}\n`;
-  overview += `• 잘 맞는 방향: ${dm.career}\n`;
-  overview += `• 관계: ${dm.relationship}`;
 
   return {
     dayMaster: dm,
